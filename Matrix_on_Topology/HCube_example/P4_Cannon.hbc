@@ -1,0 +1,6 @@
+# This is a HBC file for allocating the hypercubes in 3D for parallel matrix multiplication
+# Cannon: (m,l,n) = (256,256,256), P = 4
+@0 0 0 0 64 256 256 | 0 0 64 256 | 0 0 256 64
+@1 64 0 0 64 256 256 | 0 0 64 256 | 0 0 256 64
+@2 128 0 0 64 256 256 | 0 0 64 256 | 0 0 256 64
+@3 192 0 0 64 256 256 | 0 0 64 256 | 0 0 256 64
