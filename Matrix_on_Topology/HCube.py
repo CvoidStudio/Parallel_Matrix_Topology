@@ -19,9 +19,9 @@ class HyperCube():
 
 		# Rings along Columns
 		self.Ring = Ntuple('Ring',['area','length','members'])
-		self.Columns_A = {}
-		self.Columns_B = {}
-		self.Columns_Core = {}
+		#self.Columns_A = {}
+		#self.Columns_B = {}
+		#self.Columns_Core = {}
 		# Raw Columns
 		self.Col_dict_A = {}
 		self.Col_dict_B = {}
@@ -33,6 +33,20 @@ class HyperCube():
 			pass
 		elif param == 'buffer':
 			pass
+
+	# compressed series key
+	@staticmethod
+	def Encode_Key(col):
+		Key = []
+		ind = 0
+		for i in col:
+			if i == 2: # sender
+				Key.append(ind+1)
+			elif i == 1: # reciever
+				Key.append(-ind-1)
+			ind += 1
+		return tuple(Key)
+
 
 	def __import_info(self, P, info):
 		x, y, z, L, W, H, \
@@ -54,11 +68,10 @@ class HyperCube():
 		F = open(file_path+'.hbc', 'r')
 		FC = csv.reader(F, delimiter=separator)
 
-		Now_at = -1
 		for line in FC:
 			# get core description
 			if line[0][0] == '@':
-				Now_at = (int)(line[0][1])
+				Now_at = (int)(line[0][1:])
 
 				# block desc:
 				# x,y,z,Length,Width,Height,
@@ -89,14 +102,14 @@ class HyperCube():
 	def get_Potentials(self, Col_dict, Potentials):
 		# DFS
 		layer = 0
-		for col in Col_dict:
+		for col in Col_dict.keys():
 			recievers = []      # Candidates to be added into the rings
 			senders = []        # Candidates as sources
-			for core in range(self.num_P):
-				if col[core] == 1:
-					recievers.append(core)
-				elif col[core] == 2:
-					senders.append(core)
+			for core in col:
+				if core < 0:
+					recievers.append(-core-1)
+				elif core > 0:
+					senders.append(core-1)
 
 			# Add to potentials
 			for s in senders:
@@ -112,7 +125,7 @@ class HyperCube():
 			# Columns on A
 			for m in range(self.dim_M):
 				# hash key
-				Key = tuple(
+				Key = HyperCube.Encode_Key(
 					self.buffer_area_A[m,l,:] + self.whole_area_A[m,l,:])
 				# Count members
 				# Accumulate Cross-Section Area
@@ -124,7 +137,7 @@ class HyperCube():
 			# Columns on B
 			for n in range(self.dim_N):
 				# hash key
-				Key = tuple(
+				Key = HyperCube.Encode_Key(
 					self.buffer_area_B[l,n,:] + self.whole_area_B[l,n,:])
 				# Accumulate Cross-Section Area
 				if Key in self.Col_dict_B:
@@ -146,7 +159,8 @@ class HyperCube():
 
 	def Get_Linprog_Map(self):
 		# Return Pack
-		Constrains = Ntuple('Constrains', ['map', 'length', 'area', 'volume'])
+		Constrains = Ntuple('Constrains',
+		                    ['map', 'length', 'area', 'volume','reciever'])
 
 		# get targets
 		K_A = len(self.Col_dict_A)
@@ -157,37 +171,43 @@ class HyperCube():
 		Lin_map_A = Constrains([],
 		                       np.zeros(K_A, dtype = 'int32'),
 		                       np.zeros(K_A, dtype = 'int32'),
-		                       np.zeros(K_A, dtype = 'int32'))
+		                       np.zeros(K_A, dtype = 'int32'),
+		                       [])
 		i = 0
 		for (Col,area) in self.Col_dict_A.items():
 			Lin_map_A.area[i] = area
-			Lin_map_A.length[i] = Col.count(1)
+			Lin_map_A.length[i] = len(Col)
 			Lin_map_A.volume[i] = Lin_map_A.area[i]*Lin_map_A.length[i]
 
 			Lin_map_A.map.append([])
-			core = 0
-			for c in Col:
-				if c == 2:  # source
-					Lin_map_A.map[-1].append(core)
-				core += 1
+			Lin_map_A.reciever.append([])
+			for core in Col:
+				if core > 0:  # source
+					Lin_map_A.map[-1].append(core-1)
+				elif core < 0:
+					Lin_map_A.reciever[-1].append(-core-1)
+
 			i += 1
 
 		Lin_map_B = Constrains([],
 		                       np.zeros(K_B, dtype = 'int32'),
 		                       np.zeros(K_B, dtype = 'int32'),
-		                       np.zeros(K_B, dtype = 'int32'))
+		                       np.zeros(K_B, dtype = 'int32'),
+		                       [])
 		i = 0
 		for (Col,area) in self.Col_dict_B.items():
 			Lin_map_B.area[i] = area
-			Lin_map_B.length[i] = Col.count(1)
-			Lin_map_B.volume[i] = Lin_map_B.area[i]*Lin_map_B.length[i]
+			Lin_map_B.length[i] = len(Col)
+			Lin_map_B.volume[i] = Lin_map_B.area[i] * Lin_map_B.length[i]
 
 			Lin_map_B.map.append([])
-			core = 0
-			for c in Col:
-				if c == 2:  # source
-					Lin_map_B.map[-1].append(core)
-				core += 1
+			Lin_map_B.reciever.append([])
+			for core in Col:
+				if core > 0:  # source
+					Lin_map_B.map[-1].append(core - 1)
+				elif core < 0:
+					Lin_map_B.reciever[-1].append(-core - 1)
+
 			i += 1
 
 		return Lin_map_A, Lin_map_B
@@ -206,12 +226,12 @@ class HyperCube():
 
 		# Uncovered Area
 		# Calculating Area
-		if np.sum(self.whole_area_A) != 1:
+		if np.min(np.sum(self.whole_area_A,axis=2)) == 0:
 			print('Uncovered Calculating Volume detected in A...')
-		if np.sum(self.whole_area_B) != 1:
+		if np.min(np.sum(self.whole_area_B,axis=2)) == 0:
 			print('Uncovered Calculating Volume detected in B...')
 
-		if np.sum(self.buffer_area_A) != 1:
+		if np.min(np.sum(self.buffer_area_A,axis=2)) == 0:
 			print('Uncovered Buffer Area detected in A...')
-		if np.sum(self.buffer_area_B) != 1:
+		if np.min(np.sum(self.buffer_area_B,axis=2)) == 0:
 			print('Uncovered Buffer Area detected in B...')
