@@ -22,6 +22,8 @@
 %	style=ieee,
 %]{biblatex}
 \usepackage{csquotes}
+\usepackage[colorlinks,linkcolor=blue]{hyperref}
+
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -190,13 +192,17 @@ where $C_{mult}=\mathbb{Z}/{m\mathbb{Z}}\times \mathbb{Z}/{l\mathbb{Z}}\times \m
 \end{array}
 \right.
 \end{equation}
+\par
 	This abstract operation map represents the process: $A_{ij}\cdot B_{jk}$, and from $C_{mult}$, it can be observed that all the mapping can be described as the following figure:
-\begin{figure}[tb]
-	\includegraphics[scale=0.3]{Figures/Matrix3d.png}
+% figure 3D operation map #1
+\begin{figure}[h]
+	\includegraphics[scale=0.45]{Figures/Matrix3d.png}
 	\caption{Operation map $(f_1)_(\mathbb{R},\times ):C_A\times C_B\to C_{\text{mult}}$}
 	\label{Fig:1}
 \end{figure}
-
+~\\
+~\\
+\par
 The next process to be considered is the addition part, here since it is known that only the scalar operation is remained, and the result is a matrix $C\in \mathbb{R}^{m\times n}$, thus we define the third coordinate set as:
 \begin{equation}
 C_C=\mathbb{Z}/{m\mathbb{Z}}\times \mathbb{Z}/{n\mathbb{Z}}
@@ -211,13 +217,14 @@ And the corresponding abstract operation map is defined as:
 Here "+" is the scalar addition.
 
 	Observed from formula(2.7), all the 3D “cubes” in the Figure 2.1 with the same “z-value” are reduced in to one in the “xy-plane”, which can be plotted as the following:\par
-
-\begin{figure}[tb]
-	\includegraphics[scale=0.3]{Figures/Matrix3d_Reduce.png}
+% figure 3D operation map #2
+\begin{figure}[h]
+	\includegraphics[scale=0.45]{Figures/Matrix3d_Reduce.png}
 	\caption{Operation map $(f_2)_{F^{m\times l\times n},\text{sum}}$}
 \end{figure}
-
-	Now the whole process has been abstracted into a chain of abstract operation maps, for the matrix multiplication operation: $F^{m\times l}\times F^{l\times n}\to F^{m\times n}$, we can define the chain of abstract operation maps as the following:
+~\\
+\par
+Now the whole process has been abstracted into a chain of abstract operation maps, for the matrix multiplication operation: $F^{m\times l}\times F^{l\times n}\to F^{m\times n}$, we can define the chain of abstract operation maps as the following:
 \begin{equation}
 f_{\mathbb{R}^{m\times l}\times\mathbb{R}^{l\times n},\text{matrix multiply}} = (f_1)_{\mathbb{R},\times}\circ(f_2)_{\mathbb{R},+}
 \end{equation}
@@ -252,8 +259,9 @@ Now we take such a case for example: if there are totally 4 nodes for computing 
 \end{equation}
 \par
 So the “blocks” in ${C_mult}$ allotted to each node are shown as the following figure:\\
-\begin{figure}[tb]
-	\includegraphics[scale=0.3]{Figures/Matrix3d_Filter.png}
+% figure 3D operation map #whole
+\begin{figure}[h]
+	\includegraphics[scale=0.35]{Figures/Matrix3d_Filter.png}
 	\caption{Parallel 3D-Hypercube}
 \end{figure}
 \par
@@ -261,7 +269,7 @@ So the “blocks” in ${C_mult}$ allotted to each node are shown as the followi
 	So only consider the computational part of the whole process of matrix multiplication, all the algorithms based on Naive Algorithm can be deduced by selecting the filtering sets $\{U_p\}$, so that the algorithm is presented as the following pseudocode:\par
 
 %% --Algorithm 2.2--%%
-\begin{algorithm}[t] 
+\begin{algorithm}[h] 
 \caption{(3D-Hyperblock Matrix Multiplication)}
 \begin{adjustwidth}{0cm}{1cm} 
 \textbf{Input:} $A\in \mathbb{R}^{m\times l},B\in \mathbb{R}^{l\times n}$\\
@@ -279,6 +287,7 @@ So the “blocks” in ${C_mult}$ allotted to each node are shown as the followi
 \textbf{Return } $C$\\
 \end{adjustwidth}
 \end{algorithm}
+~\\~\\~\\
 \par
 	The members in the 3D-Hyperblock family often have the best potential in minimizing the time in communication, however, while dealing with large-scale matrices, the buffer size often becomes a problem for the cluster to limit the total size of data to be deployed onto each computation node. Therefore, each such optimization in communication involves deploying the best subset $V_p\subseteq U_p$, and find the best communication tree to pass the data among the nodes, in order to finish the tasks undertaken by $U_p$ efficiently, which is sophisticated while dealing with such $P$ cubes simultaneously.\par
 
@@ -296,8 +305,9 @@ So the “blocks” in ${C_mult}$ allotted to each node are shown as the followi
 For convenience, we describe a “cube” assigned to node p with:\par
 \begin{itemize}
 \item $m_p,l_p,n_p,$ the lengths of the cube assigned to node $p$, along with x-axis, y-axis and z-axis respectively;
-\begin{figure}[tb]
-	\includegraphics[scale=0.3]{Figures/cube.jpg}
+% figure parameters
+\begin{figure}[h]
+	\includegraphics[scale=0.45]{Figures/cube.jpg}
 	\caption{Cube Onside Node $p$}
 \end{figure}
 \end{itemize}
@@ -350,17 +360,263 @@ where the lower bound comes from the strategy that minimizing the waiting time, 
 	In practical cases, since where all the computation nodes are in the similar conditions (in CPU, GPU, RAM, etc.), we often divide the whole 3D hypercube into $P$ similar (not necessary to be identical) cubes, and assigned with similar limits of buffer sizes.\par
 	For each cube assigned to each node, due to the restriction to buffer size, our communication objective is to minimizing the time cost for communication among the nodes.\par
 	So numerate $U_p=\{(x_{pi},y_{pi},z_{pi})\}$ by taking the operation map (2.9) mentioned in subsection 2.1, which is source from $A_{pk}\times B_{pk}$ at each communication step $k$, where it should satisfy that:\par
+\begin{equation}
+|C_{pAk}|+|C_{pBk}|\le \text{Buffer}_p
+\end{equation}
+\par
+	So that we can see, to parallelize the matrix multiplication by adding the communication part in 3D-hypercube, the form of the operation maps can be totally conserved, and so construct a union of a series of operation maps in the same forms:
+\begin{equation}
+\begin{array}{ll}
+&(f_{p1})_{\mathbb{R},\times}:C_{pA}\times C_{pB}\to C_{p,mult3D}\\
+\Longrightarrow &
+C_{p,mult3D}=\bigcup_{k=1}^{\text{total steps }K}C_{p,mult3D,k}=\bigcup_{k=1}^{K}C_{pAk}\times C_{pBk}
+\end{array}
+\end{equation}
+Now to minimize the communication cost on each node with fixed limit of buffer size, we want to prove that:\par
+\begin{theorem}
+To numerate $U_p=\{(x_{pi},y_{pi},z_{pi})\}$, for $\{C_{pAk}\}$ and $\{{C_pBk}\}$ satisfying (3.5), there can exist $\{{C_{pAk}}\}$ and $\{C_{pBk}\}$ so that:
+\begin{itemize}
+\item For $\bigtriangleup k>1,d\in C_{pAk}\cap C_{pA,(k+\bigtriangleup k)}$ only if $d\in C_{pAk}\cap C_{pA,(k+\bigtriangleup k-1)}$.
+\item For $\bigtriangleup k>1,d\in C_{pBk}\cap C_{pB,(k+\bigtriangleup k)}$ only if $d\in C_{pBk}\cap C_{pB,(k+\bigtriangleup k-1)}$.
+\end{itemize}
+if given that $\text{Buffer}_p\ge \min\{m_p,n_p\}$.
+\end{theorem}
+\par
+	This theorem states the availability of Rule 3.3, so that no data (entry or block) would be sent to any one node redundantly. And the given condition can propose a general strategy for send-receive and so prove the existence.\par
+	This strategy with the condition $\text{Buffer}_p\ge \min\{m_p,n_p\}$ can be stated as the following:
+
+%% --Algorithm 3.1--%%
+\begin{algorithm}[h] 
+\caption{(3D-Hyperblock Algorithm with Communication)}
+\begin{adjustwidth}{0cm}{0cm} 
+\textbf{Input:} $A\in \mathbb{R}^{m\times l},B\in \mathbb{R}^{l\times n}$
+			$,m_p,l_p,n_p,\text{Buffer}_p\in N^+,(m_p\le n_p)$\\
+\textbf{Output:} $C\in \mathbb{R}^{m\times n}$\\
+\textbf{if} at rank $p$\textbf{ do}
+\end{adjustwidth}
+	\begin{adjustwidth}{1cm}{0cm}
+	$\text{Choose }U_p$
+	\begin{minipage}[t]{\linewidth}
+	$=\{(i_1,j_1,k_1),(i_2,j_2,k_2),...,(i_K,j_K,k_K)\} $\\
+	$\subset(\mathbb{Z}_{m_p}\times\mathbb{Z}_{l_p}\times\mathbb{Z}_{n_p})\bigoplus(i_{row},j_{row},k_{row})$
+	\end{minipage}
+
+	Let $C_{pA}=(Z_(m_p)\times Z_(l_p))\bigoplus(i_low,j_low)$ and
+	\par $C_{pB}=(Z_(l_p)\times Z_(n_p))\bigoplus(j_{low},k_{low})$.\\
+	Sort $U_p, C_{pA}$ and $C_{pB}$ increasingly with $j$.
+
+	Let $\text{StepSize}_A$ = $\lfloor\text{Buffer}_p/m_p\rfloor$,and initialize the buffer as:
+	\begin{equation*}
+		C_{pA,0}=C_{pA}[0:\text{StepSize}_A],C_{pB,0}=C_{pB}[0:\text{Buffer}_p-\text{StepSize}_A]
+	\end{equation*}
+	
+	Set numbers of steps associated to two sets as $k_A=k_B=0$.\\
+	\par
+	\textbf{for }$i,j,k$ in $U_p$,
+		\begin{adjustwidth}{1cm}{0cm}
+		\textbf{if }$(i,j)\in C_{pA,k_A}$ and $(j,k)\in C_{pB,k_B}$ \textbf{do}
+			\begin{adjustwidth}{1cm}{0cm}
+			$C_{ik}=C_{ik}+A_{ij}\cdot B_{jk}$\\
+			ready to send $(i,j)\in C_{pA,k_A}$ and $(j,k)\in C_{pB,k_B}$
+			\end{adjustwidth}
+
+		\textbf{else if }$(i,j)\notin C_{pA,k_A}$\textbf{do}
+			\begin{adjustwidth}{1cm}{0cm}
+			require $(i,j)$ from another node,\\
+			pop the front of $C_{pA,k_A}$,\\
+			push $(i,j)$ into the back of $C_{pA,k_A}$,\\
+			$k_A=k_A+1$.
+			\end{adjustwidth}
+
+		\textbf{else if }$(j,k)\notin C_{pB,k_B}$\textbf{do}
+			\begin{adjustwidth}{1cm}{0cm}
+			require $(j,k)$ from another node,\\
+			pop the front of $C_{pB,k_B}$,\\
+			push $(j,k)$ into the back of $C_{pB,k_B}$,\\
+			$k_B=k_B+1$.
+			\end{adjustwidth}
+		\end{adjustwidth}
+	Gather the results onto the root node.
+	\end{adjustwidth}
+
+\begin{adjustwidth}{0cm}{1cm} 
+\textbf{Return } $C$\\
+\end{adjustwidth}
+\end{algorithm}
+~\\
+\par
+This algorithm designs a communication tree for each node, with which we can construct an algorithm with only the following two given conditions:
+\begin{itemize}
+\item $m_p,l_p,n_p$,i.e. a cube assigned to each node $p$;
+\item $\text{Buffer}_p$.
+\end{itemize}
+\par
+And the algorithm designed based on algorithm 3.1 is called the \textbf{Buffer Adaptive Matrix Multiplication Algorithm (BAMMA)}, which can fit to pair of matrices with random dimensions and make the best usage of buffer onside each node.\par
+Next we will evaluate the performance of BAMMA, based on the variables raised in section 3.1, and show the general prediction of parallel efficiency of the algorithms for parallel matrix multiplication in 3D-Hypercube family.\par
+
+%% ------------ Subsection 3.3 ------------ %%
+\subsection{Evaluation of Performance}
+To evaluate the performance, or say the total cost of time of a parallel matrix multiplication algorithm, we need to evaluate both the computational cost and the communication cost, i.e.:
+\begin{equation}
+T=\max \limits_{p}\{T_{p,comm}+T_{p,comp}+T_{p,idle}\} 
+\end{equation}
+where the $T_{p,idle}$ is the waiting time on node p.\par
+
+	If we assigned similar cubes to $p$ nodes with similar limits of buffer sizes, then we may assume that there is a way to minimize $T_{p,idle}$ by building static routines for the whole communication forest. So that we may remove the maximum in (3.7) to estimate the total cost:
+\begin{equation}
+T_{total,P}\approx T_{p,comp}+T_{p,idle}
+\end{equation}
+
+	And considering the practical cases in computational clusters, we assume that the average time cost on one pair of send-receive process on one floating number (notated as $\hat{t}_{send-recv}$), and that of one arithmetical operation, (notated as $\hat{t}_{op}$), will satisfy that:
+\begin{equation}
+\gamma := \frac{\hat{t}_{send-recv}}{\hat{t}_{op}}
+\end{equation}
+and for practical cases, we assume $\tau$ is a constant value associated with particular machine, cluster topology, to be used to estimate the real fraction while running the program.\par
+Now firstly, for the computational cost $T_{p,comp}$, by the operation map defined as (2.10), it sources from two parts: scalar (or block) multiplication and addition, so that we have:
+\begin{equation}
+T_{p,comp}=T_{p,mult}+T_{p,add}=(2\cdot m_pl_pn_p-m_pn_p)\cdot\hat{t}_{op}\approx 2m_pl_pn_p\cdot\hat{t}_{op}
+\end{equation}
+\par
+	And for those similar $p$ cubes:
+\begin{equation}
+m_pl_pn_p\approx \frac{mln}{P}
+\end{equation}
+where P is the total number of nodes. So in total:
+\begin{equation}
+T_{comp}=T_{p,comp}\approx \frac{2mln}{P}\cdot\hat{t}_{op}
+\end{equation}
+\par
+Now consider the next part of communication, it consists of two parts: send-receive in order to complete all the computations onside each cube, and the reduction with summation:
+\begin{equation}
+T_{comm}=T_{send-recv}+T_{reduce}
+\end{equation}
+\par
+	For reduction, since the total cost is just the total number of entries (or blocks) need to be sent to the root node, along the z-axis, or say it is just the total projection area onto the xy-plane from the $P$ nodes. And since for each step, it involves one addition and one send/receive action, thus:
+\begin{equation}
+T_{send-recv}\ge C\cdot\max \limits_{p}\{m_pl_p+n_pl_p-\text{Buffer}_p\}\cdot\hat{t}_{send-recv}
+\end{equation}
+where generally $C$ is a constant, usually equals or larger than 2 for machines assigned with similar conditions, since one node can only do send or receive action at one single step.\par
+	So in summary, we add all of the costs of parts respectively together, and it deduces the prediction formula of the total cost of time:
+\begin{equation}
+T_{total,P}\ge \frac{2mln}{P}\cdot\hat{t}_{op}+(\hat{t}_{send-recv}+\hat{t}_{op})\cdot
+			\sum_{p=1}^{P}m_pn_p+\hat{t}_{send-recv}\cdot 2
+			\cdot \max \limits_{p}\{m_pl_p+n_pl_p-\text{Buffer}_p\}
+\end{equation}
+\par
+For the convenience to construct the space to include all the algorithms in 3D-Hypercube family, we define two new variables: \textbf{Z-variance} and \textbf{Maximum Saturabiliity}, denoted by $A_z$ and $\bar{S}$ respectively, as the following:
+\begin{equation}
+A_z:=\frac{\sum_{p=1}^{P}m_pn_p}{mn},
+\bar{S}:=1-\max \limits{p}\{\frac{m_pl_p+n_pl_p-\text{Buffer}_p}{l(m+n)}\}
+\end{equation}
+here $A_z\ge 1$ and $S\in(0,1]$.\par
+
+And by parallelizing the reducing process, the whole process to “compress” the cubes can be optimized into a flipped binary tree, so that it would take much shorter time than that in (3.13):
+\begin{equation}
+A_z:=\frac{\sum_{p=1}^{P}m_pn_p}{mn},
+T_{reduce}=(\hat{t}_{send-recv}+\hat{t}_{op})\cdot \log_{2}A_z\cdot mn\cdot\frac{A_z}{P}
+\end{equation}
+with considering that the columns involving different cores can reduce parallely.\par
+
+	And based on the assumptions of similar cubes we made above, we may deduce that:
+\begin{equation}
+\bar{S}:=1-\frac{\bar{m}_p\bar{l}_p+\bar{n}_p\bar{l}_p-\bar{\text{Buffer}}_p}{l(m+n)}
+\end{equation}
+where $\bar{m}_p,\bar{l}_p, \bar{n}_p$ and $\bar{\text{Buffer}}_p$ are set to be the similar for every node.\par
+
+	Then consider the total cost of the matrix multiplication on a single node is always:
+\begin{equation}
+T_{single}=(2mln-mn)\cdot\hat{t}_{op}
+\end{equation}
+\par
+So onside the $A_z-\bar{S}$ plane, we can now sketch the parallel efficiency:
+\begin{equation}
+\renewcommand\arraystretch{1.75}
+\begin{array}{rl}
+\tau(m,l,n,P)\le&\frac{1}{P}\cdot\frac{(2mln-mn)\cdot\hat{t}_{op}}
+				 {\frac{2mln-mn}{P}\cdot\hat{t}_{op}+(\hat{t}_{send-recv}+
+				  \hat{t}_{op})\cdot \log_{2}A_z\cdot mn\cdot\frac{A_z}{P}+
+				  \hat{t}_{send-recv}\cdot 2\cdot l(m+n)(1-\hat{S})}\\
+\approx&\frac{mln}{mln+(\frac{1+\gamma}{2}\cdot \log_{2}A_z\cdot mn\cdot\frac{A_z}+
+				   P\cdot \gamma\cdot l(m+n)(1-\bar{S}))}
+\end{array}
+\end{equation}
+
+because in most of the cases, $l\gg 1$ and simplify (3.18) we can finally get:
+\begin{equation}
+\tau(m,l,n,P)\le\frac{1}{1+\frac{1+\gamma}{2l}\cdot A_z\cdot \log_{2}A_z+P\cdot \gamma\cdot(\frac{1}{m}+\frac{1}{n})(1-\hat{S})}
+\end{equation}
+
+\par
+Here to normalize the space, we set $\hat{A}_z=1-\frac{\log_{2}A_z}{\log_{2}P}=1-\log_{P}A_z\in(0,1]$, since each node can at most own projection area mn onto xy-plane, and for any one column along the z-axis, there are at most P segments belong to different nodes. So that:
+\begin{equation}
+\tau(m,l,n,P)\le\frac{1}{1+\frac{1+\gamma}{2l}\cdot \log_{2}P\cdot P^{1-\hat{A}_z}\cdot(1-\hat{A}_z)
+			+ P\cdot \gamma\cdot(\frac{1}{m}+\frac{1}{n})(1-\hat{S})}
+\end{equation}
+\par
+Now with formula (3.22), we can easily predict the upper bound of the parallel efficiency by given certain $m,l,n,P,\hat{m}_p,\hat{l}_p,\hat{n}_p$ and $\\hat{text{Buffer}}_p$, and we can also locate the algorithms inside the space, with the metric of parallel efficiency.\par
+
+%% ------------ Subsection 3.4 ------------ %%
+\subsection{3D-Hypercube Family}
+Out of vision of the algorithm designer, it cannot be directly indicated from formula (3.22) that how to choose $\{m_p,l_p,n_p\}$ for given $m,l,n$ and $\text{Buffer}_p$, but with which we may estimate the performance of a parallel algorithm for matrices with certain dimensions, and so support us to promote the algorithm.\par
+For classical method, such as Cannon’s method[2], Fox method[1], and SUMMA[3], they all focus on dividing the hypercube into cubes with special shapes following some certain rules, as shown in the following figure for example:
+% Figure: Classical Methods
+\begin{figure}[h]
+	\includegraphics[scale=0.18]{Figures/3DAlg.jpg}
+	\caption{Some Classical Methods}
+\end{figure}
+\par
+	But due to different dimensions of matrices involved in the multiplication, one certain strategy to design the shape of cubes can comparatively result in different performances. Here we may plot three different color maps to show the distributions of 3D-Hypercube algorithms for parallel matrix multiplication, with the metric of parallel efficiency $\tau_{no gather}(m,l,n,P)$ defined in (3.22), under 3 different sets of dimensions, namely $m,l$ and $n$:
+% Figures Performances
+\begin{figure}[h]
+	\includegraphics[scale=0.32]{Figures/Regular.png}
+	\caption{Efficiency Distribution: Square Matrices $_{(m=l=n=1024,\tau=1)}$}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[scale=0.32]{Figures/Tall.png}
+	\caption{Efficiency Distribution: Tall Matrices $_{(m=n=512,l=4096,\tau=1)}$}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[scale=0.32]{Figures/Flat.png}
+	\caption{Efficiency Distribution: Flat Matrices $_{(m=n=2048,l=256,\tau=1)}$}
+\end{figure}
+\par
+So from the colormaps above, we may conclude some general ideas for constructing the algorithms for parallel matrix multiplication based on 3D-Hypercube:
+\begin{itemize}
+\item It would be hard to increase $\hat{A}_z$ and $\hat{S}$ with limited buffer size;
+\item When $l$ is larger than $m$ and $n$, it would be better to be prior to slice the whole hypercube along z-axis, which means smaller $\hat{S}$ can compromise to smaller $\hat{A}_z$;
+\item When $l$ is smaller than $m$ and $n$, it would be better to let each cube cover more blocks along the z-axis;\
+\end{itemize}
+\par
+And we have also raised some observations from the defined variables up to now:
+\begin{itemize}
+\item If a cube on node $P$ is more regular, i.e. $m_p,l_p$ and $n_p$ are closer to each other, then with fixed volume $m_pl_pn_p, m_pl_p+n_pl_p$ can be smaller so that it can be more possible to increase $\hat{S}$;
+\item The larger the limit of buffer size $\text{Buffer}_p$ is, the more that both $\hat{A}_z$ and $\hat{S}$ can increase;
+\item For matrices with larger scale, the proportion of computations would be larger, so that the distribution of such colormap would be closer to 1.
+\end{itemize}
+\par
+Based on those strategies, though we cannot reduce the total cost of computation, we can estimate and help to search out the best 3D-Hypercube algorithm for parallel matrix multiplication, adaptive to certain matrices dimensions, limited buffer size and some other specific conditions.\par
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{APPLICATION OF 3D-HYPERCUBE ALGORITHM}
-	
-\subsection{Estimating the Value of $\tau$}
+\section{Application of 3d-hypercube algorithm}
+	In this section, we designed a series of experiments to verify our estimations of parallel efficiency using formula (3.22).\par
+	From formula (3.22), we want to find out the relationship between the parallel efficiency of a constructed 3D-hypercube algorithm and a few variables, namely the dimensions of matrices, buffer size, and the number of nodes.\par
+	We designed the experiments consist of two parts: one for \textbf{estimating $\tau$} and the other one for \textbf{measuring time cost for particular algorithms}, all the experiments were tested in the SeaWulf Clusters%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\footnote{Seawulf Clusters: \url{https://it.stonybrook.edu/help/kb/understanding-seawulf}}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+, and run with the same one testing program, which is developed with MPI for C/C++ and is capable of parallel communication, and parallel matrix multiplication of complexity $O(N^3)$.\par
+
+\subsection{Estimating the Value of \textbf{$\tau$}}
+	As mentioned in Subsection 3.3 and referring to definition (18), $\tau$ is presumed as a constant value, associated with particular clusters with P cores. We ran the testing program to test two jobs: one for multiplying two matrices, both of dimensions $1024\times 1024$, and the other ones for broadcasting an $1024\times 1024$ matrix from each of $P$ cores one by one, so that to measuring the average costs, on unit send-receive communication, and floating operation.\par
+	For taking the average, we have run two jobs both for 10 times, in 8, 32 and 64 cores assigned by SeaWulf
+respectively. And the results are shown as below:\par
+
 		
 \subsection{Experiments of Particular Algorithms}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{CONCLUSIONS and FUTURE WORK}
+\section{Conclusions and future work}
 	In this paper, we have discussed about the construction of algorithms for parallel matrix multiplication, based on 3D-Hypercube so that with total computational complexity $O(N^3)$. We have observed that the construction of such algorithm is influenced by the number of computational nodes, the dimensions of matrices and the limit of the buffer size. Concluded from both the theoretical analysis and the experiments, it is learnt that often it is better to construct the parallel algorithms considering adaptive to certain cases, described by the three variables mentioned above, rather than primly follow the rules defined by classical methods.
 	
 	All of the theoretical analysis is based on the assumption that all the cubes and communication trees onside the P nodes are designed similarly. So as another part of our future work on parallel matrix multiplication, we are going to dig out the possibility to design and evaluate the algorithm, with more flexibility on each specific node with specific condition respectively, so that it can adapt to more practical cases with the best performance. As one of the most latest coming work, we are going to optimize the algorithms on clusters with particular or even special topologies, using the ideas raised in this paper.
