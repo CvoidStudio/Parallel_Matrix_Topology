@@ -355,7 +355,24 @@
 			
 			\subsection{Performance Analysis}
 			
+			\subsection{Hypercube Family}
 			
+	\section{APPLICATION OF 3D-HYPERCUBE ALGORITHM}
+	
+		\subsection{Estimating the Value of γ }
+		
+		\subsection{Experiments of Particular Algorithms}
+		
+	\section{5.	CONCLUSIONS and FUTURE WORK}
+	In this paper, we have discussed about the construction of algorithms for parallel matrix multiplication, based on 3D Hypercube so that with total computational complexity O(N^3 ). We have observed that the construction of such algorithm is influenced by the number of computational nodes, the dimensions of matrices and the limit of the buffer size. Concluded from both the theoretical analysis and the experiments, it is learnt that often it is better to construct the parallel algorithms considering adaptive to certain cases, described by the three variables mentioned above, rather than primly follow the rules defined by classical methods.
+	
+	All of the theoretical analysis is based on the assumption that all the cubes and communication trees onside the P nodes are designed similarly. So as another part of our future work on parallel matrix multiplication, we are going to dig out the possibility to design and evaluate the algorithm, with more flexibility on each specific node with specific condition respectively, so that it can adapt to more practical cases with the best performance. As one of the most latest coming work, we are going to optimize the algorithms on clusters with particular or even special topologies, using the ideas raised in this paper.
+	
+	And as mentioned in Section 3.2, another one of our research plans in the future is to optimize and finish the program of BAMMA, so that it can satisfy the requirement for parallel universal matrix multiplication adaptive to specific conditions, expected with better performance comparable to the classical method. And referring to a popular branch of algorithms of parallel matrix multiplication, the recursive algorithms, for instance CARMA[4] raised by the team led by James Demmel in 2013, we may need to furtherly research on the influence of sequential recursion, on the performance of a parallel algorithm of parallel matrix multiplication.
+	
+	Finally, as the final target to optimize the algorithm for general matrix multiplications, our group has proposed a formulated problem in 4D Hypercube, with the concepts of operation map mentioned in Section 2.1, to reduce the computational complexity of matrix multiplication, of which is lower than O(N^3 ), inspired by the ideas[5],  raised by Strassen in 1969as well as Coppersmith and Winograd[6] in 1987. Our next target is to find a general strategy to solve to problem so that find the limit of recursive algorithms to reduce the total complexity of matrix multiplications, and furtherly construct stable and scalable parallel algorithm for universal matrix multiplication, with lower computational complexity.
+	
+	
 
 
 \end{document}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  29 MAR 2018 02:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  29 MAR 2018 03:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -5190,7 +5190,75 @@ l.355
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
-[9] (./Matrix_Paper.aux)
+
+! Package inputenc Error: Unicode char γ (U+3B3)
+(inputenc)                not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.367 		\subsection
+                   {Experiments of Particular Algorithms}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.370 ... with total computational complexity O(N^
+                                                  3 ). We have observed that...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.371 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (1614.0016pt too wide) in paragraph at lines 370--371
+\OT1/cmr/m/n/10 com-plex-ity O(N$[])\OML/cmm/m/it/10 :Wehaveobservedthatthecons
+tructionofsuchalgorithmisinfluencedbythenumberofcomputationalnodes; thedimensio
+nsofmatricesandthelimitofthebuffersize:Concludedfromboththetheoreticalanalysisa
+ndtheexperiments; itislearntthatoftenitisbettertoconstructtheparallelalgorithms
+consideringadaptivetocertaincases; describedbythethreevariablesmentionedabove; 
+ratherthanprimlyfollowtherulesdefinedbyclassicalmethods:$ 
+ []
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.376 ...ltiplication, of which is lower than O(N^
+                                                  3 ), inspired by the ideas...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.377 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (1586.18233pt too wide) in paragraph at lines 376--377
+\OT1/cmr/m/n/10 com-plex-ity of ma-trix mul-ti-pli-ca-tion, of which is lower t
+han O(N$[])\OML/cmm/m/it/10 ; inspiredbytheideas\OT1/cmr/m/n/10 [5]\OML/cmm/m/i
+t/10 ; raisedbyStrassenin\OT1/cmr/m/n/10 1969\OML/cmm/m/it/10 aswellasCoppersmi
+thandWinograd\OT1/cmr/m/n/10 [6]\OML/cmm/m/it/10 in\OT1/cmr/m/n/10 1987\OML/cmm
+/m/it/10 :Ournexttargetistofindageneralstrategytosolvetoproblemsothatfindthelim
+itofrecursivealgorithmstoreducethetotalcomplexityofmatrixmultiplications; andfu
+rtherlyconstructstableandscalableparallelalgorithmforuniversalmatrixmultiplicat
+ion; withlowercomputationalcomplexity:$ 
+ []
+
+[9] [10] (./Matrix_Paper.aux)
 Package logreq Info: Writing requests to 'Matrix_Paper.run.xml'.
 \openout1 = `Matrix_Paper.run.xml'.
 
@@ -5200,10 +5268,10 @@ Package logreq Info: Writing requests to 'Matrix_Paper.run.xml'.
 ### simple group (level 1) entered at line 212 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 11821 strings out of 492995
- 193221 string characters out of 6132704
+ 11822 strings out of 492995
+ 193226 string characters out of 6132704
  636116 words of memory out of 5000000
- 15068 multiletter control sequences out of 15000+600000
+ 15069 multiletter control sequences out of 15000+600000
  9349 words of font info for 37 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
  36i,6n,38p,1012b,1705s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -5218,10 +5286,10 @@ r10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6
 b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><
 /usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
 usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on Matrix_Paper.pdf (9 pages, 847335 bytes).
+Output written on Matrix_Paper.pdf (10 pages, 852285 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
- 55 compressed objects within 1 object stream
+ 85 PDF objects out of 1000 (max. 8388607)
+ 57 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
