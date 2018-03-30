@@ -612,9 +612,108 @@ Based on those strategies, though we cannot reduce the total cost of computation
 	For taking the average, we have run two jobs both for 10 times, in 8, 32 and 64 cores assigned by SeaWulf
 respectively. And the results are shown as below:\par
 
+\includegraphics[scale=1]{figures/table_1.png}
+
+So with these data, we can calculate $\gamma$ respective to each $P$ following the deduction below:
+
+\begin{equation}
+	\frac{T_{becast}}{T_{mult}} = \frac{P(P-1)\cdot 1024^{2} \cdot \hat{t}_{sendrecv}}{(C_{program} \cdot 1024^3 - 1024^2) \cdot \hat{t}_{op} } = \frac{P(P-1)}{C_{program} \cdot 1024 -1} \cdot \gamma
+\end{equation}
+
+Here $C_program$ means the account of floating operations executed per step in a practical program for matrix multiplication. However, in practical cases, it is tough to measure $C_program$ stably and precisely, so compromising to experimental cases, formula (31) is modified as the following:
+
+\begin{equation} 
+	%need to fix how to add  mark down note
+	\renewcommand\arraystretch{1.75}
+	\begin{array}{rl}
+	\tau(m,l,n,P) =& \frac{1}{P} \cdot \frac{mln \cdot T_{mult \_ per \_ step}}{\frac{mln}{P} \cdot T_{mult \_ per \_ step} + (\hat{t}_{send-recv} + \hat{t}_{op}) \cdot \log_{2} A_{z} \cdot mn \cdot \frac{A_{z}}{P} + \hat{t}_{sendrecv} \cdot 2 \cdot l}\\ 
+	=& \frac{1}{1 + \frac{\hat{t}_{sendrecv} + \hat{t}_{op}}{T_{mult \_ per \_ step} } \cdot \frac{\log_{2} \hat{A}_{z}}{l} \cdot \hat{A}_{z} + \frac{2 \cdot \hat{t}_send-recv}{T_{mult \_ per \_ step}} \cdot P \cdot (\frac{1}{m} + \frac{1}{n})(1- \bar{S}) }
+	\end{array}
+\end{equation}
+
+Here $T_{mult \_ per \_ step}$ is the time cost per step in the loop of a matrix multiplication in programming.
 		
+		Then comparing to formula (32), it is reasonable to obtain the following relationship:
+
+\begin{equation}
+\gamma \approx \frac{2 \cdot \hat{t}_{sendrecv}}{T_{mult_per_step}} = 2 \cdot \frac{T_{bcast} / P(P-1) \cdot 1024^2}{T_{mult}/(1024^3)} = \frac{2048}{P(P-1)} \cdot \frac{T_{bcast}}{T_{mult}}
+\end{equation}
+
+So the estimated value of each $\gamma$ is calculated as the following:
+
+\includegraphics[scale=1]{figures/table_2.png}
+
+It has to be admitted that there values are less than the real ones due to those not considered, and the communication performance is usually more complicated in parallel program, than that analyzed in theory so that hard to obtain the correct $\gamma$.
+
 \subsection{Experiments of Particular Algorithms}
 
+For each cases with 8, 32 and 64 cores respectively, we designed 7, 10 and 10 different strategies to split the 3D hypercube and allocate the buffers in different way, so that constructed various algorithms for testing the performances of each. 
+
+To evaluate the performance, the formula for calculating the parallel efficiency is applied here:
+
+\begin{equation}
+\tau = \frac{1}{P} \cdot \frac{T_{one \_ core}}{T_{P \_ Cores}}
+\end{equation}
+
+The plans with results  are shown as the following subsections:
+
+\emph{4.3.1 P = 8} (total 7 cases)
+
+(1) Cube Dimension $(m_p , l_p, n_p)$ = (128, 1024, 1024), $\bar{A_z}$ = 1:
+
+\includegraphics[scale=0.8]{figures/table_p8_1.png}
+
+(2) Cube Dimension $(m_p , l_p, n_p)$ = (512, 512, 512), $\bar{A_z}$ = 0.6667:
+
+\includegraphics[scale=0.8]{figures/table_p8_2.png}
+
+(3) Cube Dimension $(m_p , l_p, n_p)$ = (1024, 128, 1024), $\bar{A_z}$ = 0:
+
+\includegraphics[scale=0.8]{figures/table_p8_3.png}
+
+\emph{4.3.2 P = 32} (total 10 cases)
+
+(1) Cube Dimension $(m_p , l_p, n_p)$ = (32, 1024, 1024), $\bar{A_z}$ = 1:
+
+\includegraphics[scale=0.8]{figures/table_p32_1.png}
+
+(2) Cube Dimension $(m_p , l_p, n_p)$ = (256, 512, 256), $\bar{A_z}$ = 0.8:
+
+\includegraphics[scale=0.8]{figures/table_p32_2.png}
+
+(3) Cube Dimension $(m_p , l_p, n_p)$ = (512, 128, 512), $\bar{A_z}$ = 0.4:
+
+\includegraphics[scale=0.8]{figures/table_p32_3.png}
+
+(4) Cube Dimension $(m_p , l_p, n_p)$ = (1024, 32, 1024), $\bar{A_z}$ = 0:
+
+\includegraphics[scale=0.8]{figures/table_p32_4.png}
+
+
+
+\emph{4.3.2 P = 64} (total 10 cases)
+
+(1) Cube Dimension $(m_p , l_p, n_p)$ = (32, 1024, 1024), $\bar{A_z}$ = 1:
+
+\includegraphics[scale=0.8]{figures/table_p64_1.png}
+
+(2) Cube Dimension $(m_p , l_p, n_p)$ = (256, 512, 256), $\bar{A_z}$ = 0.6667:
+
+\includegraphics[scale=0.8]{figures/table_p64_2.png}
+
+(3) Cube Dimension $(m_p , l_p, n_p)$ = (512, 128, 512), $\bar{A_z}$ = 0.3333:
+
+\includegraphics[scale=0.8]{figures/table_p64_3.png}
+
+(4) Cube Dimension $(m_p , l_p, n_p)$ = (1024, 32, 1024), $\bar{A_z}$ = 0:
+
+\includegraphics[scale=0.8]{figures/table_p64_4.png}
+
+Therefore, finally we can plot the experimental results inside a 3D space together with the expected surfaces sketched from formula (32), which is shown as the following:
+
+\includegraphics[scale=0.8]{figures/Efficieny.png}
+
+Comparing to the analytic surfaces, we found that the communication parts of the algorithms are indeed affected by more other elements not discussed in this paper, which to be searched out is part of the future work on BAMMA.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions and future work}
 	In this paper, we have discussed about the construction of algorithms for parallel matrix multiplication, based on 3D-Hypercube so that with total computational complexity $O(N^3)$. We have observed that the construction of such algorithm is influenced by the number of computational nodes, the dimensions of matrices and the limit of the buffer size. Concluded from both the theoretical analysis and the experiments, it is learnt that often it is better to construct the parallel algorithms considering adaptive to certain cases, described by the three variables mentioned above, rather than primly follow the rules defined by classical methods.
