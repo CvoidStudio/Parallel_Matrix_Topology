@@ -17,6 +17,7 @@
 \usepackage{caption}
 \usepackage{enumitem}
 \usepackage{multirow}
+\usepackage[titletoc]{appendix}
 %\usepackage[
 %	backend=biber,
 %	style=ieee,
@@ -54,7 +55,7 @@
 
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICATION ALGORITHMS}
+\title{GENERAL CONSTRUCTION AND ANALYSIS OF \\ PARALLEL MATRIX MULTIPLICATION ALGORITHMS}
 
 %    Information for first author
 \author{WENJING CUN}
@@ -66,14 +67,14 @@ Stony Brook, New York 11790}
 %Case Western Reserve University, Cleveland, Ohio 43403}
 \email{wenjing.cun@stonybrook.edu}
 %    \thanks will become a 1st page footnote.
-\thanks{The first author was supported in part by NSF Grant \#000000.}
+%\thanks{The first author was supported in part by NSF Grant \#000000.}
 
 %    Information for second author
 \author{LIHUA PEI}
 \address{Department of Applied Mathematics, Stonybrook Univ. SUNY, 
 Stony Brook, New York 11790}
 \email{lihua.pei@stonybrook.edu}
-\thanks{Support information for the second author.}
+%\thanks{Support information for the second author.}
 
 %    Information for second author
 \author{YUEFAN DENG}
@@ -104,7 +105,7 @@ Furtherly, this paper proposes a formulated problem to reduce the computational 
 
 	The organization of this paper is as the following: Section 2 will present the general idea of designing the algorithms of matrix multiplication on 3D hypercube, based the maps between sets of coordinates. In Section 3, we will propose the problem of constructing the communication forest among the computation nodes, while proceeding the parallel algorithms, and organize the family of the parallel algorithms based on 3D hypercube. Then Section 4 will present the analysis of several classical parallel algorithms for matrix multiplication and propose a general algorithm for constructing the distributed plan for universal matrix multiplication. Finally this paper will propose a problem of reducing the computational complexity, and summarize the construction of algorithms.\par
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+~\\
 \section{Construction of matrix multiplication in 3D hypercube}
 Firstly, we shall review the naïve algorithm of matrix multiplication.\par
 %% --Algorithm 2.1--%%
@@ -561,24 +562,25 @@ Out of vision of the algorithm designer, it cannot be directly indicated from fo
 For classical method, such as Cannon’s method[2], Fox method[1], and SUMMA[3], they all focus on dividing the hypercube into cubes with special shapes following some certain rules, as shown in the following figure for example:
 % Figure: Classical Methods
 \begin{figure}[h]
-	\includegraphics[scale=0.18]{Figures/3DAlg.jpg}
+	\includegraphics[scale=0.2]{Figures/3DAlg.jpg}
 	\caption{Some Classical Methods}
 \end{figure}
 \par
 	But due to different dimensions of matrices involved in the multiplication, one certain strategy to design the shape of cubes can comparatively result in different performances. Here we may plot three different color maps to show the distributions of 3D-Hypercube algorithms for parallel matrix multiplication, with the metric of parallel efficiency $\tau_{no gather}(m,l,n,P)$ defined in (3.22), under 3 different sets of dimensions, namely $m,l$ and $n$:
 % Figures Performances
 \begin{figure}[h]
-	\includegraphics[scale=0.32]{Figures/Regular.png}
+	\includegraphics[scale=0.35]{Figures/Regular.png}
 	\caption{Efficiency Distribution: Square Matrices $_{(m=l=n=1024,\tau=1)}$}
 \end{figure}
 \begin{figure}[h]
-	\includegraphics[scale=0.32]{Figures/Tall.png}
+	\includegraphics[scale=0.35]{Figures/Tall.png}
 	\caption{Efficiency Distribution: Tall Matrices $_{(m=n=512,l=4096,\tau=1)}$}
 \end{figure}
 \begin{figure}[h]
-	\includegraphics[scale=0.32]{Figures/Flat.png}
+	\includegraphics[scale=0.35]{Figures/Flat.png}
 	\caption{Efficiency Distribution: Flat Matrices $_{(m=n=2048,l=256,\tau=1)}$}
 \end{figure}
+~\\~\\~\\~\\~\\
 \par
 So from the colormaps above, we may conclude some general ideas for constructing the algorithms for parallel matrix multiplication based on 3D-Hypercube:
 \begin{itemize}
@@ -610,9 +612,17 @@ Based on those strategies, though we cannot reduce the total cost of computation
 \subsection{Estimating the Value of \textbf{$\tau$}}
 	As mentioned in Subsection 3.3 and referring to definition (18), $\tau$ is presumed as a constant value, associated with particular clusters with P cores. We ran the testing program to test two jobs: one for multiplying two matrices, both of dimensions $1024\times 1024$, and the other ones for broadcasting an $1024\times 1024$ matrix from each of $P$ cores one by one, so that to measuring the average costs, on unit send-receive communication, and floating operation.\par
 	For taking the average, we have run two jobs both for 10 times, in 8, 32 and 64 cores assigned by SeaWulf
-respectively. And the results are shown as below:\par
+respectively. And the results%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\footnote{The detailed results may be referred in Appendix A.}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ are shown as below:\par
 
-\includegraphics[scale=1]{figures/table_1.png}
+
+\begin{table}[h]
+\caption{Statistics of Communication and Computation Tests}
+\includegraphics[scale=0.9]{figures/table_1.png}
+\end{table}
 
 So with these data, we can calculate $\gamma$ respective to each $P$ following the deduction below:
 
@@ -620,7 +630,7 @@ So with these data, we can calculate $\gamma$ respective to each $P$ following t
 	\frac{T_{becast}}{T_{mult}} = \frac{P(P-1)\cdot 1024^{2} \cdot \hat{t}_{sendrecv}}{(C_{program} \cdot 1024^3 - 1024^2) \cdot \hat{t}_{op} } = \frac{P(P-1)}{C_{program} \cdot 1024 -1} \cdot \gamma
 \end{equation}
 
-Here $C_program$ means the account of floating operations executed per step in a practical program for matrix multiplication. However, in practical cases, it is tough to measure $C_program$ stably and precisely, so compromising to experimental cases, formula (31) is modified as the following:
+Here $C_program$ means the account of floating operations executed per step in a practical program for matrix multiplication. However, in practical cases, it is tough to measure $C_program$ stably and precisely, so compromising to experimental cases, formula (3.21) is modified as the following:
 
 \begin{equation} 
 	%need to fix how to add  mark down note
@@ -633,7 +643,7 @@ Here $C_program$ means the account of floating operations executed per step in a
 
 Here $T_{mult \_ per \_ step}$ is the time cost per step in the loop of a matrix multiplication in programming.
 		
-		Then comparing to formula (32), it is reasonable to obtain the following relationship:
+		Then comparing to formula (3.22), it is reasonable to obtain the following relationship:
 
 \begin{equation}
 \gamma \approx \frac{2 \cdot \hat{t}_{sendrecv}}{T_{mult_per_step}} = 2 \cdot \frac{T_{bcast} / P(P-1) \cdot 1024^2}{T_{mult}/(1024^3)} = \frac{2048}{P(P-1)} \cdot \frac{T_{bcast}}{T_{mult}}
@@ -641,13 +651,16 @@ Here $T_{mult \_ per \_ step}$ is the time cost per step in the loop of a matrix
 
 So the estimated value of each $\gamma$ is calculated as the following:
 
-\includegraphics[scale=1]{figures/table_2.png}
-
+\begin{table}[h]
+\caption{$\gamma$ Values Calculated from the Experiments}
+\includegraphics[scale=0.8]{figures/table_2.png}
+\end{table}
+\par
 It has to be admitted that there values are less than the real ones due to those not considered, and the communication performance is usually more complicated in parallel program, than that analyzed in theory so that hard to obtain the correct $\gamma$.
 
 \subsection{Experiments of Particular Algorithms}
 
-For each cases with 8, 32 and 64 cores respectively, we designed 7, 10 and 10 different strategies to split the 3D hypercube and allocate the buffers in different way, so that constructed various algorithms for testing the performances of each. 
+For each cases with 8, 32 and 64 cores respectively, we designed 7, 10 and 10 different strategies to split the 3D-hypercube and allocate the buffers in different way, so that constructed various algorithms for testing the performances of each. 
 
 To evaluate the performance, the formula for calculating the parallel efficiency is applied here:
 
@@ -655,63 +668,27 @@ To evaluate the performance, the formula for calculating the parallel efficiency
 \tau = \frac{1}{P} \cdot \frac{T_{one \_ core}}{T_{P \_ Cores}}
 \end{equation}
 
-The plans with results  are shown as the following subsections:
+The plans with results%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\footnote{The detailed results may be referred in Appendix B.}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ are shown as the following subsections:
 
-\emph{4.3.1 P = 8} (total 7 cases)
+\subsubsection{$P = 8$} (total 7 cases)\\
+\includegraphics[scale=0.41]{figures/Experiments_P8.jpg}
 
-(1) Cube Dimension $(m_p , l_p, n_p)$ = (128, 1024, 1024), $\bar{A_z}$ = 1:
+\subsubsection{$P = 32$} (total 10 cases)\\
+\includegraphics[scale=0.38]{figures/Experiments_P32.jpg}
 
-\includegraphics[scale=0.8]{figures/table_p8_1.png}
+\subsubsection{$P = 64$} (total 10 cases)\\
+\includegraphics[scale=0.38]{figures/Experiments_P64.jpg}
 
-(2) Cube Dimension $(m_p , l_p, n_p)$ = (512, 512, 512), $\bar{A_z}$ = 0.6667:
+Therefore, finally we can plot the experimental results inside a 3D space together with the expected surfaces sketched from formula (3.22), which is shown as the following:
+\begin{figure}[h]
+	\includegraphics[scale=0.7]{figures/Efficieny.png}
+	\caption{Efficiency Distribution with Experiments Results}
+\end{figure}
 
-\includegraphics[scale=0.8]{figures/table_p8_2.png}
-
-(3) Cube Dimension $(m_p , l_p, n_p)$ = (1024, 128, 1024), $\bar{A_z}$ = 0:
-
-\includegraphics[scale=0.8]{figures/table_p8_3.png}
-
-\emph{4.3.2 P = 32} (total 10 cases)
-
-(1) Cube Dimension $(m_p , l_p, n_p)$ = (32, 1024, 1024), $\bar{A_z}$ = 1:
-
-\includegraphics[scale=0.8]{figures/table_p32_1.png}
-
-(2) Cube Dimension $(m_p , l_p, n_p)$ = (256, 512, 256), $\bar{A_z}$ = 0.8:
-
-\includegraphics[scale=0.8]{figures/table_p32_2.png}
-
-(3) Cube Dimension $(m_p , l_p, n_p)$ = (512, 128, 512), $\bar{A_z}$ = 0.4:
-
-\includegraphics[scale=0.8]{figures/table_p32_3.png}
-
-(4) Cube Dimension $(m_p , l_p, n_p)$ = (1024, 32, 1024), $\bar{A_z}$ = 0:
-
-\includegraphics[scale=0.8]{figures/table_p32_4.png}
-
-
-
-\emph{4.3.2 P = 64} (total 10 cases)
-
-(1) Cube Dimension $(m_p , l_p, n_p)$ = (32, 1024, 1024), $\bar{A_z}$ = 1:
-
-\includegraphics[scale=0.8]{figures/table_p64_1.png}
-
-(2) Cube Dimension $(m_p , l_p, n_p)$ = (256, 512, 256), $\bar{A_z}$ = 0.6667:
-
-\includegraphics[scale=0.8]{figures/table_p64_2.png}
-
-(3) Cube Dimension $(m_p , l_p, n_p)$ = (512, 128, 512), $\bar{A_z}$ = 0.3333:
-
-\includegraphics[scale=0.8]{figures/table_p64_3.png}
-
-(4) Cube Dimension $(m_p , l_p, n_p)$ = (1024, 32, 1024), $\bar{A_z}$ = 0:
-
-\includegraphics[scale=0.8]{figures/table_p64_4.png}
-
-Therefore, finally we can plot the experimental results inside a 3D space together with the expected surfaces sketched from formula (32), which is shown as the following:
-
-\includegraphics[scale=0.8]{figures/Efficieny.png}
 
 Comparing to the analytic surfaces, we found that the communication parts of the algorithms are indeed affected by more other elements not discussed in this paper, which to be searched out is part of the future work on BAMMA.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -721,9 +698,95 @@ Comparing to the analytic surfaces, we found that the communication parts of the
 	All of the theoretical analysis is based on the assumption that all the cubes and communication trees onside the P nodes are designed similarly. So as another part of our future work on parallel matrix multiplication, we are going to dig out the possibility to design and evaluate the algorithm, with more flexibility on each specific node with specific condition respectively, so that it can adapt to more practical cases with the best performance. As one of the most latest coming work, we are going to optimize the algorithms on clusters with particular or even special topologies, using the ideas raised in this paper.
 	
 	And as mentioned in Section 3.2, another one of our research plans in the future is to optimize and finish the program of BAMMA, so that it can satisfy the requirement for parallel universal matrix multiplication adaptive to specific conditions, expected with better performance comparable to the classical method. And referring to a popular branch of algorithms of parallel matrix multiplication, the recursive algorithms, for instance CARMA[4] raised by the team led by James Demmel in 2013, we may need to furtherly research on the influence of sequential recursion, on the performance of a parallel algorithm of parallel matrix multiplication.
-	
-	Finally, as the final target to optimize the algorithm for general matrix multiplications, our group has proposed a formulated problem in 4D Hypercube, with the concepts of operation map mentioned in Section 2.1, to reduce the computational complexity of matrix multiplication, of which is lower than $O(N^3)$, inspired by the ideas[5], raised by Strassen in 1969, as well as Coppersmith and Winograd[6] in 1987. Our next target is to find a general strategy to solve to problem so that find the limit of recursive algorithms to reduce the total complexity of matrix multiplications, and furtherly construct stable and scalable parallel algorithm for universal matrix multiplication, with lower computational complexity.
 
+	Furtherly expanding the algorithm into higher dimensions, series of productions, and special matrices, is also worthwhile. Obtaining a reliable method of parallel matrix multiplication may provide a way to predict and promote the speedup and efficiency of tensor production [7]. And to follow current great researches on sparse tensor space[8], 3D-hypercube algorithm may be helpful with assiting constructing a denser space for faster computitation, with avoiding the uncessary and redundant calculations.  
+	
+	Finally, as the final target to optimize the algorithm for general matrix multiplications, our group has proposed a formulated problem in 4D Hypercube, with the concepts of operation map mentioned in Section 2.1, to reduce the computational complexity of matrix multiplication, of which is lower than $O(N^3)$, inspired by the ideas[5],  raised by Strassen in 1969as well as Coppersmith and Winograd[6] in 1987. And now there has been some great work on that, for instance the research on parallel Strassen on MIMD system[9]. Our next target is to find a general strategy to solve the problem so that find the limit of recursive algorithms to reduce the total complexity of matrix multiplications, and furtherly construct stable and scalable parallel algorithm for universal matrix multiplication, with lower computational complexity.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{amsplain}
+\begin{thebibliography}{10}
+
+\bibitem {F}Fox, G.C., et al., \textit{Solving problems on concurrent processors}. 
+Vol. 1: General techniques and regular problems. 1988: Prentice-Hall, Inc.
+
+\bibitem {C}Cannon, L.E., \textit{A cellular computation to implement the kalman filter algorithm}.
+ 1969, Montana State University Bozeman Engineering Research Labs.
+
+\bibitem {V}Van De Geijn, R.A. and J. Watts, \textit{SUMMA: Scalable universal matrix multiplication algorithm}.
+ Concurrency-Practice and Experience, 1997. 9(4): p. 255-274.
+
+\bibitem {D}Demmel, J., et al. \textit{Communication-optimal parallel recursive rectangular matrix multiplication}.
+ in Parallel \& Distributed Processing (IPDPS), 2013 IEEE 27th International Symposium on. 2013. IEEE.
+
+\bibitem {S}Strassen, V., \textit{Gaussian elimination is not optimal}. Numerische mathematik, 1969. 13(4): p. 354-356.
+
+\bibitem {C}Coppersmith, D. and S. Winograd. \textit{Matrix multiplication via arithmetic progressions}.
+ in Proceedings of the nineteenth annual ACM symposium on Theory of computing. 1987. ACM.
+
+\bibitem {M}M. Griebel and H. Harbrecht., \textit{On the construction of sparse tensor product spaces},
+ Math. Comp. 82 (2013), 975-994.
+
+\bibitem {F} F. Johansson. \textit{A fast algorithm for reversion of power series}. Math. Comp., 84:475–484, 2015.
+
+\bibitem {C}Chung-Chiang Chou, Yuefan Deng, Gang Li, and Yuan Wang. 
+\textit{Parallelizing Strassen's Method for Matrix Multiplication on Distributed Memory MIMD architectures}.
+
+\end{thebibliography}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\begin{appendix}
+\section*{Appendix A: Measurement of the values of $\gamma$}
+\begin{table}[h]
+\caption*{Results of Experiments of Individual Computation}
+\renewcommand\arraystretch{1.5}
+\noindent\[
+\begin{array}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+P&\text{Test1}&\text{Test2}&\text{Test3}&\text{Test4}&\text{Test5}&\text{Test6}&\text{Test7}&\text{Test8}&\text{Test9}&\text{Test10}\\
+\hline
+8&5.2368&5.2352&5.2354&5.2396&5.2383&5.2362&5.2357&5.2368&5.2355&5.2372\\
+\hline
+32&5.2768&5.2717&5.2759&5.2862&5.2733&5.2842&5.2752&5.2728&5.2766&5.2732\\
+\hline
+64&5.2709&5.2760&5.2852&5.2748&5.2739&5.2712&5.2891&5.2773&5.2777&5.2729\\
+\hline
+\end{array}
+\]
+\end{table}
+
+\begin{table}[h]
+\caption*{Results of Experiments of Broadcasting}
+\renewcommand\arraystretch{1.5}
+\noindent\[
+\begin{array}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+P&\text{Test1}&\text{Test2}&\text{Test3}&\text{Test4}&\text{Test5}&\text{Test6}&\text{Test7}&\text{Test8}&\text{Test9}&\text{Test10}\\
+\hline
+8&5.2368&5.2352&5.2354&5.2396&5.2383&5.2362&5.2357&5.2368&5.2355&5.2372\\
+\hline
+32&5.2768&5.2717&5.2759&5.2862&5.2733&5.2842&5.2752&5.2728&5.2766&5.2732\\
+\hline
+64&5.2709&5.2760&5.2852&5.2748&5.2739&5.2712&5.2891&5.2773&5.2777&5.2729\\
+\hline
+\end{array}
+\]
+\end{table}
+
+\newpage
+\section*{Appendix B: Experiments of 3D-hypercube algorithms}
+\text{$P=8, m=l=n=1024$: (in sec)}\\
+\includegraphics[scale=0.5]{figures/Appendix_Alg1.jpg}\par
+
+\text{$P=32, m=l=n=1024$: (in sec)}\\
+\includegraphics[scale=0.5]{figures/Appendix_Alg2.jpg}\par
+
+\text{$P=64, m=l=n=1024$: (in sec)}\\
+\includegraphics[scale=0.5]{figures/Appendix_Alg3.jpg}\par
+
+\end{appendix}
+\newpage
 \end{document}
 
 %------------------------------------------------------------------------------
