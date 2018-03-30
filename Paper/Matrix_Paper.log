@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  29 MAR 2018 21:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  29 MAR 2018 21:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -785,22 +785,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 169--170
 
  []
 
+<Figures/Matrix3d.png, id=84, 754.82pt x 824.07875pt>
+File: Figures/Matrix3d.png Graphic file (type png)
 
-LaTeX Warning: File `Figures/Matrix3d.png' not found on input line 199.
-
-
-! Package pdftex.def Error: File `Figures/Matrix3d.png' not found.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.199 ...raphics[scale=0.45]{Figures/Matrix3d.png}
-                                                  
-Using draft setting for this image.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+<use Figures/Matrix3d.png>
+Package pdftex.def Info: Figures/Matrix3d.png used on input line 199.
+(pdftex.def)             Requested size: 339.66586pt x 370.83202pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 196--205
 
@@ -820,29 +810,29 @@ Overfull \hbox (43.19087pt too wide) has occurred while \output is active
 TION ALGORITHMS []
  []
 
-[3]
+[3] <Figures/Matrix3d_Reduce.png, id=99, 754.82pt x 824.07875pt>
+File: Figures/Matrix3d_Reduce.png Graphic file (type png)
 
-LaTeX Warning: File `Figures/Matrix3d_Reduce.png' not found on input line 222.
+<use Figures/Matrix3d_Reduce.png>
+Package pdftex.def Info: Figures/Matrix3d_Reduce.png used on input line 222.
+(pdftex.def)             Requested size: 339.66586pt x 370.83202pt.
 
 
-! Package pdftex.def Error: File `Figures/Matrix3d_Reduce.png' not found.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.222 ...[scale=0.45]{Figures/Matrix3d_Reduce.png}
-                                                  
-Using draft setting for this image.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 225--226
 
  []
 
-[4] <Figures/Matrix3d_Filter.png, id=110, 1062.97125pt x 507.8975pt>
+[4 <./Figures/Matrix3d.png>]
+Overfull \hbox (43.19087pt too wide) has occurred while \output is active
+ \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
+TION ALGORITHMS []
+ []
+
+[5 <./Figures/Matrix3d_Reduce.png>]
+<Figures/Matrix3d_Filter.png, id=117, 1062.97125pt x 507.8975pt>
 File: Figures/Matrix3d_Filter.png Graphic file (type png)
 
 <use Figures/Matrix3d_Filter.png>
@@ -854,9 +844,7 @@ Overfull \hbox (12.04552pt too wide) in paragraph at lines 264--265
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 290--291
-
- []
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 290--291
@@ -869,13 +857,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 290--291
  []
 
 
-Overfull \hbox (43.19087pt too wide) has occurred while \output is active
- \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
-TION ALGORITHMS []
+Underfull \hbox (badness 10000) in paragraph at lines 290--291
+
  []
 
-[5 <./Figures/Matrix3d_Filter.png (PNG copy)>]
-<Figures/cube.jpg, id=118, 706.64pt x 612.2875pt>
+[6 <./Figures/Matrix3d_Filter.png (PNG copy)>]
+<Figures/cube.jpg, id=125, 706.64pt x 612.2875pt>
 File: Figures/cube.jpg Graphic file (type jpg)
  <use Figures/cube.jpg>
 Package pdftex.def Info: Figures/cube.jpg used on input line 310.
@@ -884,13 +871,13 @@ Package pdftex.def Info: Figures/cube.jpg used on input line 310.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[6]
+
 Overfull \hbox (43.19087pt too wide) has occurred while \output is active
  \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
 TION ALGORITHMS []
  []
 
-[7 <./Figures/cube.jpg>]
+[7] [8 <./Figures/cube.jpg>]
 Overfull \hbox (48.45016pt too wide) in paragraph at lines 398--403
 []$[]\OML/cmm/m/it/10 U[]$ [] 
  []
@@ -903,13 +890,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 446--447
 
  []
 
-[8]
+
 Overfull \hbox (43.19087pt too wide) has occurred while \output is active
  \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
 TION ALGORITHMS []
  []
 
-[9]
+[9] [10]
 Overfull \hbox (22.22891pt too wide) detected at line 504
 []\OML/cmm/m/it/10 T[] \OMS/cmsy/m/n/10 ^^U [] ^^A [] \OT1/cmr/m/n/10 + ([] + [
 ]) \OMS/cmsy/m/n/10 ^^A [] \OML/cmm/m/it/10 m[]n[] \OT1/cmr/m/n/10 + [] \OMS/cm
@@ -917,26 +904,27 @@ sy/m/n/10 ^^A \OT1/cmr/m/n/10 2 \OMS/cmsy/m/n/10 ^^A []f\OML/cmm/m/it/10 m[]l[]
  \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 n[]l[] \OMS/cmsy/m/n/10 ^^@ [][]g
  []
 
-[10]
+
+Overfull \hbox (43.19087pt too wide) has occurred while \output is active
+ \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
+TION ALGORITHMS []
+ []
+
+[11]
 Overfull \hbox (13.94887pt too wide) detected at line 542
 [][]
  []
 
+[12] <Figures/3DAlg.jpg, id=178, 2065.7175pt x 742.775pt>
+File: Figures/3DAlg.jpg Graphic file (type jpg)
 
-LaTeX Warning: File `Figures/3DAlg.jpg' not found on input line 564.
+<use Figures/3DAlg.jpg>
+Package pdftex.def Info: Figures/3DAlg.jpg used on input line 564.
+(pdftex.def)             Requested size: 371.81311pt x 133.69373pt.
 
-
-! Package pdftex.def Error: File `Figures/3DAlg.jpg' not found.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.564 ...degraphics[scale=0.18]{Figures/3DAlg.jpg}
-                                                  
-Using draft setting for this image.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+Overfull \hbox (11.81311pt too wide) in paragraph at lines 564--565
+ [][] 
+ []
 
 
 Overfull \hbox (6.02852pt too wide) in paragraph at lines 561--567
@@ -944,56 +932,42 @@ Overfull \hbox (6.02852pt too wide) in paragraph at lines 561--567
 od[1], and SUMMA[3],
  []
 
+<Figures/Regular.png, id=179, 1160.83687pt x 298.11375pt>
+File: Figures/Regular.png Graphic file (type png)
+
+<use Figures/Regular.png>
+Package pdftex.def Info: Figures/Regular.png used on input line 571.
+(pdftex.def)             Requested size: 371.47539pt x 95.39835pt.
+
+Overfull \hbox (11.47539pt too wide) in paragraph at lines 571--572
+ [][] 
+ []
+
+<Figures/Tall.png, id=180, 1160.83687pt x 298.11375pt>
+File: Figures/Tall.png Graphic file (type png)
+ <use Figures/Tall.png>
+Package pdftex.def Info: Figures/Tall.png used on input line 575.
+(pdftex.def)             Requested size: 371.47539pt x 95.39835pt.
+
+Overfull \hbox (11.47539pt too wide) in paragraph at lines 575--576
+ [][] 
+ []
+
+<Figures/Flat.png, id=181, 1160.83687pt x 298.11375pt>
+File: Figures/Flat.png Graphic file (type png)
+ <use Figures/Flat.png>
+Package pdftex.def Info: Figures/Flat.png used on input line 579.
+(pdftex.def)             Requested size: 371.47539pt x 95.39835pt.
+
+Overfull \hbox (11.47539pt too wide) in paragraph at lines 579--580
+ [][] 
+ []
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: File `Figures/Regular.png' not found on input line 571.
-
-
-! Package pdftex.def Error: File `Figures/Regular.png' not found.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.571 ...graphics[scale=0.32]{Figures/Regular.png}
-                                                  
-Using draft setting for this image.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `Figures/Tall.png' not found on input line 575.
-
-
-! Package pdftex.def Error: File `Figures/Tall.png' not found.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.575 ...udegraphics[scale=0.32]{Figures/Tall.png}
-                                                  
-Using draft setting for this image.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `Figures/Flat.png' not found on input line 579.
-
-
-! Package pdftex.def Error: File `Figures/Flat.png' not found.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.579 ...udegraphics[scale=0.32]{Figures/Flat.png}
-                                                  
-Using draft setting for this image.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Overfull \hbox (43.19087pt too wide) has occurred while \output is active
@@ -1001,7 +975,7 @@ Overfull \hbox (43.19087pt too wide) has occurred while \output is active
 TION ALGORITHMS []
  []
 
-[11] [12]
+[13 <./Figures/3DAlg.jpg> <./Figures/Regular.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 611.
@@ -1014,19 +988,14 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `math shift' on input line 611.
 
-<figures/table_1.png, id=180, 337.26pt x 114.4275pt>
+[14 <./Figures/Tall.png> <./Figures/Flat.png>]
+<figures/table_1.png, id=202, 337.26pt x 114.4275pt>
 File: figures/table_1.png Graphic file (type png)
  <use figures/table_1.png>
 Package pdftex.def Info: figures/table_1.png used on input line 615.
 (pdftex.def)             Requested size: 337.25917pt x 114.42722pt.
 
-Overfull \hbox (43.19087pt too wide) has occurred while \output is active
- \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
-TION ALGORITHMS []
- []
-
-[13 <./figures/table_1.png>]
-<figures/table_2.png, id=192, 383.4325pt x 32.12pt>
+<figures/table_2.png, id=203, 383.4325pt x 32.12pt>
 File: figures/table_2.png Graphic file (type png)
  <use figures/table_2.png>
 Package pdftex.def Info: figures/table_2.png used on input line 644.
@@ -1036,7 +1005,14 @@ Overfull \hbox (35.43156pt too wide) in paragraph at lines 644--645
 [][] 
  []
 
-<figures/table_p8_1.png, id=193, 459.7175pt x 102.3825pt>
+
+Overfull \hbox (43.19087pt too wide) has occurred while \output is active
+ \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
+TION ALGORITHMS []
+ []
+
+[15 <./figures/table_1.png> <./figures/table_2.png>]
+<figures/table_p8_1.png, id=213, 459.7175pt x 102.3825pt>
 File: figures/table_p8_1.png Graphic file (type png)
 
 <use figures/table_p8_1.png>
@@ -1047,7 +1023,7 @@ Overfull \hbox (19.77449pt too wide) in paragraph at lines 664--665
 [][] 
  []
 
-<figures/table_p8_2.png, id=194, 469.755pt x 105.39375pt>
+<figures/table_p8_2.png, id=214, 469.755pt x 105.39375pt>
 File: figures/table_p8_2.png Graphic file (type png)
 
 <use figures/table_p8_2.png>
@@ -1058,15 +1034,14 @@ Overfull \hbox (27.80452pt too wide) in paragraph at lines 668--669
 [][] 
  []
 
-<figures/table_p8_3.png, id=195, 246.9225pt x 107.40125pt>
+<figures/table_p8_3.png, id=215, 246.9225pt x 107.40125pt>
 File: figures/table_p8_3.png Graphic file (type png)
 
 <use figures/table_p8_3.png>
 Package pdftex.def Info: figures/table_p8_3.png used on input line 672.
 (pdftex.def)             Requested size: 197.53824pt x 85.9211pt.
- [14 <./figures/table_2.png> <./figures/table_p8_1.png> <./figures/table_p8_2.p
-ng>]
-<figures/table_p32_1.png, id=205, 459.7175pt x 95.35625pt>
+
+<figures/table_p32_1.png, id=216, 459.7175pt x 95.35625pt>
 File: figures/table_p32_1.png Graphic file (type png)
 
 <use figures/table_p32_1.png>
@@ -1077,7 +1052,7 @@ Overfull \hbox (19.77449pt too wide) in paragraph at lines 678--679
 [][] 
  []
 
-<figures/table_p32_2.png, id=206, 448.67625pt x 96.36pt>
+<figures/table_p32_2.png, id=217, 448.67625pt x 96.36pt>
 File: figures/table_p32_2.png Graphic file (type png)
 
 <use figures/table_p32_2.png>
@@ -1088,21 +1063,23 @@ Overfull \hbox (10.94148pt too wide) in paragraph at lines 682--683
 [][] 
  []
 
-<figures/table_p32_3.png, id=207, 338.26375pt x 97.36375pt>
+[16 <./figures/table_p8_1.png> <./figures/table_p8_2.png> <./figures/table_p8_3
+.png> <./figures/table_p32_1.png>]
+<figures/table_p32_3.png, id=227, 338.26375pt x 97.36375pt>
 File: figures/table_p32_3.png Graphic file (type png)
 
 <use figures/table_p32_3.png>
 Package pdftex.def Info: figures/table_p32_3.png used on input line 686.
 (pdftex.def)             Requested size: 270.61136pt x 77.89108pt.
 
-<figures/table_p32_4.png, id=208, 229.85875pt x 97.36375pt>
+<figures/table_p32_4.png, id=228, 229.85875pt x 97.36375pt>
 File: figures/table_p32_4.png Graphic file (type png)
 
 <use figures/table_p32_4.png>
 Package pdftex.def Info: figures/table_p32_4.png used on input line 690.
 (pdftex.def)             Requested size: 183.88722pt x 77.89108pt.
 
-<figures/table_p64_1.png, id=209, 461.725pt x 95.35625pt>
+<figures/table_p64_1.png, id=229, 461.725pt x 95.35625pt>
 File: figures/table_p64_1.png Graphic file (type png)
 
 <use figures/table_p64_1.png>
@@ -1113,18 +1090,7 @@ Overfull \hbox (21.38051pt too wide) in paragraph at lines 698--699
 [][] 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Overfull \hbox (43.19087pt too wide) has occurred while \output is active
- \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
-TION ALGORITHMS []
- []
-
-[15 <./figures/table_p8_3.png> <./figures/table_p32_1.png> <./figures/table_p32
-_2.png> <./figures/table_p32_3.png> <./figures/table_p32_4.png> <./figures/tabl
-e_p64_1.png>] <figures/table_p64_2.png, id=220, 448.67625pt x 96.36pt>
+<figures/table_p64_2.png, id=230, 448.67625pt x 96.36pt>
 File: figures/table_p64_2.png Graphic file (type png)
 
 <use figures/table_p64_2.png>
@@ -1135,31 +1101,37 @@ Overfull \hbox (10.94148pt too wide) in paragraph at lines 702--703
 [][] 
  []
 
-<figures/table_p64_3.png, id=221, 338.26375pt x 96.36pt>
+<figures/table_p64_3.png, id=231, 338.26375pt x 96.36pt>
 File: figures/table_p64_3.png Graphic file (type png)
 
 <use figures/table_p64_3.png>
 Package pdftex.def Info: figures/table_p64_3.png used on input line 706.
 (pdftex.def)             Requested size: 270.61136pt x 77.08807pt.
 
-<figures/table_p64_4.png, id=222, 227.85126pt x 96.36pt>
+<figures/table_p64_4.png, id=232, 227.85126pt x 96.36pt>
 File: figures/table_p64_4.png Graphic file (type png)
 
 <use figures/table_p64_4.png>
 Package pdftex.def Info: figures/table_p64_4.png used on input line 710.
 (pdftex.def)             Requested size: 182.28123pt x 77.08807pt.
 
-<figures/Efficieny.png, id=223, 380.622pt x 299.6796pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (43.19087pt too wide) has occurred while \output is active
+ \OT1/cmr/m/n/7 GENERAL CONSTRUCTION AND ANALYSIS OF PARALLEL MATRIX MULTIPLICA
+TION ALGORITHMS []
+ []
+
+[17 <./figures/table_p32_2.png> <./figures/table_p32_3.png> <./figures/table_p3
+2_4.png> <./figures/table_p64_1.png> <./figures/table_p64_2.png> <./figures/tab
+le_p64_3.png>] <figures/Efficieny.png, id=243, 380.622pt x 299.6796pt>
 File: figures/Efficieny.png Graphic file (type png)
 
 <use figures/Efficieny.png>
 Package pdftex.def Info: figures/Efficieny.png used on input line 714.
 (pdftex.def)             Requested size: 304.49799pt x 239.74399pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [16 <./figures/table_p64_2.png> <./figures/table_p64_3.png> <./figures/table_p
-64_4.png> <./figures/Efficieny.png>]
+ [18 <./figures/table_p64_4.png> <./figures/Efficieny.png>]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 727.
 
 Overfull \hbox (43.19087pt too wide) has occurred while \output is active
@@ -1167,7 +1139,7 @@ Overfull \hbox (43.19087pt too wide) has occurred while \output is active
 TION ALGORITHMS []
  []
 
-[17]
+[19]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 727.
  (./Matrix_Paper.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 727.
@@ -1176,13 +1148,13 @@ Package rerunfilecheck Info: File `Matrix_Paper.out' has not changed.
 (rerunfilecheck)             Checksum: 9A3B38F5DC5E18EA0B72F4E24DC6B8A3;1035.
  ) 
 Here is how much of TeX's memory you used:
- 9866 strings out of 492995
- 142975 string characters out of 6132704
+ 9890 strings out of 492995
+ 143566 string characters out of 6132704
  258819 words of memory out of 5000000
- 13019 multiletter control sequences out of 15000+600000
- 11081 words of font info for 43 fonts, out of 8000000 for 9000
+ 13042 multiletter control sequences out of 15000+600000
+ 10913 words of font info for 42 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 36i,14n,39p,849b,411s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,14n,39p,849b,482s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
@@ -1200,14 +1172,13 @@ e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2017/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2017/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2017/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2017/texmf
--dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2017/texmf-d
-ist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2017/tex
-mf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on Matrix_Paper.pdf (17 pages, 1082794 bytes).
+f-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2017/texmf-
+dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2017/te
+xmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on Matrix_Paper.pdf (19 pages, 2111401 bytes).
 PDF statistics:
- 324 PDF objects out of 1000 (max. 8388607)
- 251 compressed objects within 3 object streams
- 85 named destinations out of 1000 (max. 500000)
- 185 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 340 PDF objects out of 1000 (max. 8388607)
+ 255 compressed objects within 3 object streams
+ 87 named destinations out of 1000 (max. 500000)
+ 215 words of extra memory for PDF output out of 10000 (max. 10000000)
 
