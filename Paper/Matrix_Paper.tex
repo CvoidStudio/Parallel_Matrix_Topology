@@ -91,23 +91,20 @@ Stony Brook, New York 11790}
 \keywords{Parallel Computation, Matrix Theory}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-	This paper proposes a general vision onto the construction of the algorithms of parallel matrix multiplication in distributed-memory system. Via the analysis of the communication forest of the algorithms, this paper presents a map of the parallel algorithms for universal matrix multiplication, based on 3-dimensional hypercube algorithm with computational complexity of $O(N^3)$, and presents the experiments results of several algorithms on clusters to compare the performance.
+	Algorithms of parallel matrix multiplication for distributed-memory systems are analyzed and a map of the universal parallel matrix multiplication algorithms, based on 3-dimensional hypercube with computational complexity of $O(N^3)$ are presembled. Numerical experiments of several algorithms on clusters were carried out to compare the performace. 
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \maketitle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-	High-performance algorithms of linear operations are critical for many of the computing tasks, and to promote the performance of computing in computers, the topology-based algorithms of operations on specific fields are more valuable for research, in order to promote the flexibility and robustness more regardless of the values involved.\par
+	High-performance computing (HPC) algorithms for linear algebra are critical for many application in science, engineering and commerce. Matrix multiplication (MM) is the heart of many linear algebra problems. Much efforts have been devoted to discuss the general method for MM  and the parallelization of it. Several classical methods have attracted wide acceptance. It is desirable to design a map for organizing the family of parallel matrix multiplication (PMM) algorithms. With the metric of parallel efficiency of the lattice, it is now possible to evaluate the upper bound of the algorithms depending on any given dimensions of the matrices.\par
 
-	And as one of the most essential linear operations, matrix multiplication is a good start point to launch our research on abstract operation. This paper will mainly discuss about the general method of constructing algorithms for matrix multiplication, and the parallelization of it, with several classical methods as well as analysis of their performances for instance.
-In this research, we have discovered a general map to organize the family of the algorithms, and with the metric of parallel efficiency of the lattice, it is now possible for mathematicians to evaluate the upper bound of the algorithms depending on any given dimensions of the matrices, 
-Furtherly, this paper proposes a formulated problem to reduce the computational complexity of the algorithm of matrix multiplication, which is still not resolved, yet we will figure it as a future work to research on, to lead the way to optimize the distributed algorithms with computational complexity lower than $O(N^3)$.\par
-
-	The organization of this paper is as the following: Section 2 will present the general idea of designing the algorithms of matrix multiplication on 3D hypercube, based the maps between sets of coordinates. In Section 3, we will propose the problem of constructing the communication forest among the computation nodes, while proceeding the parallel algorithms, and organize the family of the parallel algorithms based on 3D hypercube. Then Section 4 will present the analysis of several classical parallel algorithms for matrix multiplication and propose a general algorithm for constructing the distributed plan for universal matrix multiplication. Finally this paper will propose a problem of reducing the computational complexity, and summarize the construction of algorithms.\par
+	The rest of the manuscript is organized as follows: Section 2 presents the general idea of MM  on 3D hypercube, based the maps between sets of coordinates. Section 3  constructs the communication forest among the computation nodes, while proceeding the parallel algorithms, and organizing the family of the parallel algorithms based on 3D hypercube. Section 4 analyzes several classical PMM algorithms and propose a general algorithm for universal MM. Finally, Section 5 discusses the performance and the reduction of the computational complexity, and summarizes the construction of algorithms.\par
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ~\\
 \section{Construction of matrix multiplication in 3D hypercube}
-Firstly, we shall review the naïve algorithm of matrix multiplication.\par
+Firstly, we shall review the naïve algorithm of MM.\par
+
 %% --Algorithm 2.1--%%
 \begin{algorithm}[t] 
 \caption{(Naive Algorithm)}
@@ -130,56 +127,67 @@ Firstly, we shall review the naïve algorithm of matrix multiplication.\par
 \end{adjustwidth}
 \end{algorithm}
 %% --END Alg 2.1-- %%
-Naïve algorithm is the direct definition of matrix multiplications for any given pair of matrices: $A\in R^{(m\times l)},B\in R^{(l\times n)}$, where $m,l$ and n are some positive integers. And if we just focus on one final result in $C=A\cdot B$, namely $C_{ij}$, then we have:
+
+Naïve algorithm is the direct definition of MM s for any given pair of matrices: $A\in R^{(m\times l)},B\in R^{(l\times n)}$, where $m,l$ and n are positive integers. Focusing on one final product $C=A\cdot B$, namely $C_{ij}$, we have:
 \begin{equation}
 C_{ik}=\sum_{j=1}^{l}(A_{ij}\cdot B_{jk})
 \end{equation}
 
-Then regardless of the actual values of $A_{ij}$ and $B_{jk}$, formula (1) reveals the information that $C_{ik}$ only results from the values in the coordinates depending on three indices i,j and k, namely $(i,j,k)$. Then group all $(i,j,k)$ corresponding to the coordinates in $A$ and $B$ together, we may expect there is a well-defined map from such a set of $(i,j,k)$ to that of $(i,k)$ in $C$.\par
-Sourced from such an idea, and in order to make the algorithms totally independent of the values involved, so that can be flexible and robust, we will define such a map from a set of coordinates to another one in the first subsection.\par
+which dependes on the matrix elements at three indices $i$,$j$ and $k$, namely $(i,j,k)$. Thus, grouping all $(i,j,k)$ in $A
+$ and $B$ may produce a well-structured map from the set $(i,j,k)$ to the set $(i,k)$ for $C$ and this map is expected to be independent of the actual values of the matrix element.
+
+
+%Then regardless of the actual values of $A_{ij}$ and $B_{jk}$, formula (1) reveals the information that $C_{ik}$ only results from the values in the coordinates depending on three indices i,j and k, namely $(i,j,k)$. Then group all $(i,j,k)$ corresponding to the coordinates in $A$ and $B$ together, we may expect there is a well-defined map from such a set of $(i,j,k)$ to that of $(i,k)$ in $C$.\par
+%Sourced from such an idea, and in order to make the algorithms totally independent of the values involved, so that can be flexible and robust, we will define such a map from a set of coordinates to another one in the first subsection.\par
+
 
 %% ------------ Subsection 2.1 ------------ %%
 \subsection{Coordinate Set and Operation Map}
-Maps between sets of values with associate coordinates are often independent of the values involved, but more like the relationship among the indices of coordinates. So to abstract such relationships, we proposed the concept called operation map, of which the definition is as the following:
+Maps between sets of values with associate coordinates are often independent of the values involved, but more like the relationship among the indices of coordinates. So to abstract such relationships, we define the following \textbf{operation map}:
+
 \begin{definition}
-An operation map is a map from one set A to another set B, where there are two injective maps $L_1:C\to A, L_2:C\to B$, and C is a set with a well-defined operation function $\tau$.
+An \textbf{operation map} is a map from one set A to another set B, where there are two injective maps $L_1:C\to A, L_2:C\to B$, and C is a set with a well-defined operation function $\tau$.
 \end{definition}
-For convenience, we denote such an operation map $f$ as: $f_{C,\tau}:A\to B$, and name $L_1,L_2$ as the coordinate maps. Here A and B are the topologies from which the sets of values in $C$ abstracted into, and sourcing from the most intuitive concept in geometry, we call $A$ and $B$ the corresponding coordinate sets.
-And an abstract operation map has a property sourced from the abstraction of the value set to coordinate sets:\
+
+For convenience, we denote such an operation map $f$ as: $f_{C,\tau}:A\to B$, and name $L_1,L_2$ as the \emph{\textbf{coordinate maps}}. Here $A$ and $B$ are the topologies from which the sets of values in $C$ abstracted into, and sourcing from the most intuitive concept in geometry, we call $A$ and $B$ the corresponding \emph{\textbf{coordinate maps}}. Among the many properties, we list the first one for the operation map:
 % Theorem 2.1
 \begin{theorem}
 Given an operation map $f_{C,\tau}:C_1\to C_2$, if $S$ is closed under a well-defined operation $\tau$ , or say $G$ is an algebraic group, then for any subset $S\subseteq G$, $f_{C,\tau}:C_1\to C_2$ is also an operation map. Vice Versa.
 \end{theorem}
-Such a property shows the stability of an operation map regardless of the values when the inputs in conservative of the algebraic operation.\par
-For a series of operation maps, they will follow the chain rule if they follow Theorem 2.1:
+This is the stability property of an operation map, i.e., the operation map is stable regardless of the values when the inputs in conservative of the algebraic operation.\par
+
+For a series of operation maps, \textbf{chain rule} applies:
 % Theorem 2.2
 \begin{theorem}
 Given a set $G$ that is closed under a series of operations $\tau_1,...,\tau_n$, a series of sets $C_1,...,C_n$, also a series of subsets of $G, S_1,...,S_n$, there exist at least $n$ operation maps:
-\begin{equation}
-(f_1)_{S_1,\tau_1},...,(f_n)_{S_n,\tau_n}
-\end{equation}
-And $(f_1)_{S_1,\tau_1},...,(f_n)_{S_n,\tau_n}$ is also an operation map.
+
+%\begin{equation}
+%(f_1)_{S_1,\tau_1},...,(f_n)_{S_n,\tau_n}
+%\end{equation}
+
+where $(f_1)_{S_1,\tau_1},...,(f_n)_{S_n,\tau_n}$ is also an operation map.
 \end{theorem}
 
-Following the chain rule in the opposite direction, if an abstract operation map $f_(G,\tau):C_1\to C_2$ can be decomposed into a series of abstract operation maps, then we say $f_(G,\tau)$ is separable.\par
-The third property we raise here shows one additional great value of abstract operations, that is the flexibility, aka the scalability in computational engineering, if the operation map can be conservative in topology:
+Following the chain rule in the opposite direction, if an abstract operation map $f_(G,\tau):C_1\to C_2$ can be decomposed into a series of operation maps, then $f_(G,\tau)$ is \emph{\textbf{separable}}.\par
+
+The third property shows the flexibility, or the scalability in computational engineering, if the operation map can be conservative in topology:
 % Theorem 2.3
 \begin{theorem}
 Given two homomorphic algebraic structures $G_1$ and $G_2$, closed under two operations $\tau_1$ and $\tau_2$ respectively, if $S_1\subseteq G_1$ and $S_2\subseteq G_2$ are two subsets, and an operation map $f_(S_1,\tau_1):C_1\to C_2$, then $f_(S_2,\tau_2):C_1\to C_2$ is also an operation map.
 \end{theorem}
-In the next subsection, we will present the ideas of abstracting the process of matrix multiplication, based on the naive algorithm 2.1, into a separable operation map composed by several independent stages, and shows the methodology to parallelize the algorithm.\\
+We will next abstract the process of MM , based Algorithm 2.1, into a separable operation map composed by several independent stages. We also introduce the parallelization of the algorithm.\\
 
 
 
 %% ------------ Subsection 2.2 ------------ %%
 \subsection{Algorithms Based on 3-Dimensional Hypercube}
-	To abstract the naïve algorithm 2.1 into the operation maps into operations maps mentioned in the previous subsection, the first step is to split all the multiplications between a pair of scalars out, then for the 3D-hypercube algorithm, this step means an abstract operation map from a coordinate set $C_{11}$ to the other one $C_{12}$. Since the original coordinate set represents the positions of all the entries of $A$ and $B$, then we denote the set of the coordinate as:
+	To abstract Algorithm 2.1 into the operation maps into operations maps, we first split all the multiplications between a pair of scalars. Then, for the 3D-hypercube algorithm, we construct an operation map from a coordinate set $C_{11}$ to the other one $C_{12}$. Since the original coordinate set represents the positions of the elements of $A$ and $B$, whose coordinate are
 \begin{equation}
 C_A=\mathbb{Z}/{m\mathbb{Z}}\times \mathbb{Z}/{l\mathbb{Z}},
 C_B=\mathbb{Z}/{l\mathbb{Z}}\times \mathbb{Z}/{n\mathbb{Z}}
 \end{equation}
 
-And define the following abstract operation map:
+The operation map is
 \begin{equation}
 (f_1)_{\mathbb{R},\times}:C_A\times C_B\to C_{mult3D}
 \end{equation}
@@ -194,21 +202,21 @@ where $C_{mult}=\mathbb{Z}/{m\mathbb{Z}}\times \mathbb{Z}/{l\mathbb{Z}}\times \m
 \right.
 \end{equation}
 \par
-	This abstract operation map represents the process: $A_{ij}\cdot B_{jk}$, and from $C_{mult}$, it can be observed that all the mapping can be described as the following figure:
+	This operation map represents the process of $A_{ij}\cdot B_{jk}$, and from $C_{mult}$, it can be illustrated in Fig.1:
 % figure 3D operation map #1
 \begin{figure}[h]
 	\includegraphics[scale=0.45]{Figures/Matrix3d.png}
-	\caption{Operation map $(f_1)_(\mathbb{R},\times ):C_A\times C_B\to C_{\text{mult}}$}
+	\caption{The operation map $(f_1)_(\mathbb{R},\times ):C_A\times C_B\to C_{\text{mult}}$}
 	\label{Fig:1}
 \end{figure}
 ~\\
 ~\\
 \par
-The next process to be considered is the addition part, here since it is known that only the scalar operation is remained, and the result is a matrix $C\in \mathbb{R}^{m\times n}$, thus we define the third coordinate set as:
+The next operation is that of addition. Since only the scalar operations remain, the result is a matrix  $C\in \mathbb{R}^{m\times n}$, thus we define the third coordinate set as
 \begin{equation}
 C_C=\mathbb{Z}/{m\mathbb{Z}}\times \mathbb{Z}/{n\mathbb{Z}}
 \end{equation}\par
-And the corresponding abstract operation map is defined as:
+and the corresponding abstract operation map is 
 \begin{equation}
 \begin{array}{l}  
              (f_2)_{R,+}:C_{mult3D}\to C_C\\ 
@@ -217,7 +225,9 @@ And the corresponding abstract operation map is defined as:
 \end{equation}
 Here "+" is the scalar addition.
 
-	Observed from formula(2.7), all the 3D “cubes” in the Figure 2.1 with the same “z-value” are reduced in to one in the “xy-plane”, which can be plotted as the following:\par
+	%Observed from formula(2.7), all the 3D “cubes” in the Figure 2.1 with the same “z-value” are reduced in to one in the “xy-plane”, which can be plotted as the following:\par
+	
+	Equation $(2.7)$, reveals that all the 3D “cubes” in the Figure 1 with the same “z-value” are reduced in to one in the “xy-plane”, illustrated in Figure 2. \par
 % figure 3D operation map #2
 \begin{figure}[h]
 	\includegraphics[scale=0.45]{Figures/Matrix3d_Reduce.png}
@@ -225,7 +235,8 @@ Here "+" is the scalar addition.
 \end{figure}
 ~\\
 \par
-Now the whole process has been abstracted into a chain of abstract operation maps, for the matrix multiplication operation: $F^{m\times l}\times F^{l\times n}\to F^{m\times n}$, we can define the chain of abstract operation maps as the following:
+
+Now the whole process has been abstracted into a chain of abstract operation maps, for the MM  operation: $F^{m\times l}\times F^{l\times n}\to F^{m\times n}$, we can define the chain of abstract operation maps as the following:
 \begin{equation}
 f_{\mathbb{R}^{m\times l}\times\mathbb{R}^{l\times n},\text{matrix multiply}} = (f_1)_{\mathbb{R},\times}\circ(f_2)_{\mathbb{R},+}
 \end{equation}
@@ -244,7 +255,7 @@ g_{\mathbb{R},=}((r_a,c_b,c_a))=
 \end{array}
 \end{equation} 
 \par
-	Here $U_p$ is a custom set chosen for each node $p$, called a filtering set, represents the “blocks” chosen for node $p$ to calculate. Thus, the chain of abstract operation maps for each node $p$ is written as:
+	Here $U_p$ is a custom set chosen for each node $p$, called a \emph{\textbf{filtering set}}, represents the “blocks” chosen for node $p$ to calculate. Thus, the chain of abstract operation maps for each node $p$ is written as:
 \begin{equation}
 (f_p)_{\mathbb{R}^{m\times l}\times\mathbb{R}^{l\times n},\text{matrix multiply}}=
 (f_1)_{mathbb{R},\times}\circ g_{mathbb{R},=}\circ(f_2)_{mathbb{R},+}
@@ -266,8 +277,8 @@ So the “blocks” in ${C_mult}$ allotted to each node are shown as the followi
 	\caption{Parallel 3D-Hypercube}
 \end{figure}
 \par
-	In fact, the strategy to choose filtering sets as single “cubes” that all span over z-axis, is similar to one of the popular general algorithm for parallel universal matrix multiplication, called BMR[1], if not consider the communication among the nodes. Specially, if the blocks are not finished computing at one communicating step, it can deduce many interesting algorithms, where Cannon’s algorithm[2] and SUMMA[3] are two of the famous ones.\par
-	So only consider the computational part of the whole process of matrix multiplication, all the algorithms based on Naive Algorithm can be deduced by selecting the filtering sets $\{U_p\}$, so that the algorithm is presented as the following pseudocode:\par
+	In fact, the strategy to choose filtering sets as single “cubes” that all span over z-axis, is similar to one of the popular general algorithm for parallel universal MM, called BMR[1], if not consider the communication among the nodes. Specially, if the blocks are not finished computing at one communicating step, it can deduce many interesting algorithms, where Cannon’s algorithm[2] and SUMMA[3] are two of the famous ones.\par
+	So only consider the computational part of the whole process of MM, all the algorithms based on Naive Algorithm can be deduced by selecting the filtering sets $\{U_p\}$, so that the algorithm is presented as the following pseudocode:\par
 
 %% --Algorithm 2.2--%%
 \begin{algorithm}[h] 
@@ -292,13 +303,13 @@ So the “blocks” in ${C_mult}$ allotted to each node are shown as the followi
 \par
 	The members in the 3D-Hyperblock family often have the best potential in minimizing the time in communication, however, while dealing with large-scale matrices, the buffer size often becomes a problem for the cluster to limit the total size of data to be deployed onto each computation node. Therefore, each such optimization in communication involves deploying the best subset $V_p\subseteq U_p$, and find the best communication tree to pass the data among the nodes, in order to finish the tasks undertaken by $U_p$ efficiently, which is sophisticated while dealing with such $P$ cubes simultaneously.\par
 
-	In the next section, we will discuss the influence of limiting buffer size on designing the communication part for a parallel algorithm, and find out a general map for designing the algorithm for parallel matrix multiplication.\par
+	In the next section, we will discuss the influence of limiting buffer size on designing the communication part for a parallel algorithm, and find out a general map for designing the algorithm for PMM.\par
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Communication in 3d-hypercube}
-	Allocation of blocks of operations to each computational node is straightforward for 3D hypercube algorithms, however, while dealing with large-scale matrix multiplications, the restricted buffer size will limit the size of data stored onside each node.\par
-	Generally, when a parallel program allows all the nodes to own all the necessary data already, in terms of the algorithm itself, the cost of communication can be minimized. Otherwise, one node lacking necessary data needs to fetch those needed from the other ones. So for parallel matrix multiplication, referring to algorithm 2.2, often we can only deploy part of $U_p$ onto node $p$, then following the communication tree, at each step, one need to finish as much as computation tasks with its data owing, release or send the data no longer needed, and require and receive the data needed for next step of computation.\par
+	Allocation of blocks of operations to each computational node is straightforward for 3D hypercube algorithms, however, while dealing with large-scale MMs, the restricted buffer size will limit the size of data stored onside each node.\par
+	Generally, when a parallel program allows all the nodes to own all the necessary data already, in terms of the algorithm itself, the cost of communication can be minimized. Otherwise, one node lacking necessary data needs to fetch those needed from the other ones. So for PMM, referring to algorithm 2.2, often we can only deploy part of $U_p$ onto node $p$, then following the communication tree, at each step, one need to finish as much as computation tasks with its data owing, release or send the data no longer needed, and require and receive the data needed for next step of computation.\par
 
 
 %% ------------ Subsection 3.1 ------------ %%
@@ -365,7 +376,7 @@ where the lower bound comes from the strategy that minimizing the waiting time, 
 |C_{pAk}|+|C_{pBk}|\le \text{Buffer}_p
 \end{equation}
 \par
-	So that we can see, to parallelize the matrix multiplication by adding the communication part in 3D-hypercube, the form of the operation maps can be totally conserved, and so construct a union of a series of operation maps in the same forms:
+	So that we can see, to parallelize the MM by adding the communication part in 3D-hypercube, the form of the operation maps can be totally conserved, and so construct a union of a series of operation maps in the same forms:
 \begin{equation}
 \begin{array}{ll}
 &(f_{p1})_{\mathbb{R},\times}:C_{pA}\times C_{pB}\to C_{p,mult3D}\\
@@ -453,11 +464,11 @@ This algorithm designs a communication tree for each node, with which we can con
 \end{itemize}
 \par
 And the algorithm designed based on algorithm 3.1 is called the \textbf{Buffer Adaptive Matrix Multiplication Algorithm (BAMMA)}, which can fit to pair of matrices with random dimensions and make the best usage of buffer onside each node.\par
-Next we will evaluate the performance of BAMMA, based on the variables raised in section 3.1, and show the general prediction of parallel efficiency of the algorithms for parallel matrix multiplication in 3D-Hypercube family.\par
+Next we will evaluate the performance of BAMMA, based on the variables raised in section 3.1, and show the general prediction of parallel efficiency of the algorithms for PMM in 3D-Hypercube family.\par
 
 %% ------------ Subsection 3.3 ------------ %%
 \subsection{Evaluation of Performance}
-To evaluate the performance, or say the total cost of time of a parallel matrix multiplication algorithm, we need to evaluate both the computational cost and the communication cost, i.e.:
+To evaluate the performance, or say the total cost of time of a PMM algorithm, we need to evaluate both the computational cost and the communication cost, i.e.:
 \begin{equation}
 T=\max \limits_{p}\{T_{p,comm}+T_{p,comp}+T_{p,idle}\} 
 \end{equation}
@@ -524,7 +535,7 @@ with considering that the columns involving different cores can reduce parallely
 \end{equation}
 where $\bar{m}_p,\bar{l}_p, \bar{n}_p$ and $\bar{\text{Buffer}}_p$ are set to be the similar for every node.\par
 
-	Then consider the total cost of the matrix multiplication on a single node is always:
+	Then consider the total cost of the MM on a single node is always:
 \begin{equation}
 T_{single}=(2mln-mn)\cdot\hat{t}_{op}
 \end{equation}
@@ -566,7 +577,7 @@ For classical method, such as Cannon’s method[2], Fox method[1], and SUMMA[3],
 	\caption{Some Classical Methods}
 \end{figure}
 \par
-	But due to different dimensions of matrices involved in the multiplication, one certain strategy to design the shape of cubes can comparatively result in different performances. Here we may plot three different color maps to show the distributions of 3D-Hypercube algorithms for parallel matrix multiplication, with the metric of parallel efficiency $\tau_{no gather}(m,l,n,P)$ defined in (3.22), under 3 different sets of dimensions, namely $m,l$ and $n$:
+	But due to different dimensions of matrices involved in the multiplication, one certain strategy to design the shape of cubes can comparatively result in different performances. Here we may plot three different color maps to show the distributions of 3D-Hypercube algorithms for PMM, with the metric of parallel efficiency $\tau_{no gather}(m,l,n,P)$ defined in (3.22), under 3 different sets of dimensions, namely $m,l$ and $n$:
 % Figures Performances
 \begin{figure}[h]
 	\includegraphics[scale=0.35]{Figures/Regular.png}
@@ -582,7 +593,7 @@ For classical method, such as Cannon’s method[2], Fox method[1], and SUMMA[3],
 \end{figure}
 ~\\~\\~\\~\\~\\
 \par
-So from the colormaps above, we may conclude some general ideas for constructing the algorithms for parallel matrix multiplication based on 3D-Hypercube:
+So from the colormaps above, we may conclude some general ideas for constructing the algorithms for PMM based on 3D-Hypercube:
 \begin{itemize}
 \item It would be hard to increase $\hat{A}_z$ and $\hat{S}$ with limited buffer size;
 \item When $l$ is larger than $m$ and $n$, it would be better to be prior to slice the whole hypercube along z-axis, which means smaller $\hat{S}$ can compromise to smaller $\hat{A}_z$;
@@ -596,7 +607,7 @@ And we have also raised some observations from the defined variables up to now:
 \item For matrices with larger scale, the proportion of computations would be larger, so that the distribution of such colormap would be closer to 1.
 \end{itemize}
 \par
-Based on those strategies, though we cannot reduce the total cost of computation, we can estimate and help to search out the best 3D-Hypercube algorithm for parallel matrix multiplication, adaptive to certain matrices dimensions, limited buffer size and some other specific conditions.\par
+Based on those strategies, though we cannot reduce the total cost of computation, we can estimate and help to search out the best 3D-Hypercube algorithm for PMM, adaptive to certain matrices dimensions, limited buffer size and some other specific conditions.\par
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -607,7 +618,7 @@ Based on those strategies, though we cannot reduce the total cost of computation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \footnote{Seawulf Clusters: \url{https://it.stonybrook.edu/help/kb/understanding-seawulf}}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-, and run with the same one testing program, which is developed with MPI for C/C++ and is capable of parallel communication, and parallel matrix multiplication of complexity $O(N^3)$.\par
+, and run with the same one testing program, which is developed with MPI for C/C++ and is capable of parallel communication, and PMM of complexity $O(N^3)$.\par
 
 \subsection{Estimating the Value of \textbf{$\tau$}}
 	As mentioned in Subsection 3.3 and referring to definition (18), $\tau$ is presumed as a constant value, associated with particular clusters with P cores. We ran the testing program to test two jobs: one for multiplying two matrices, both of dimensions $1024\times 1024$, and the other ones for broadcasting an $1024\times 1024$ matrix from each of $P$ cores one by one, so that to measuring the average costs, on unit send-receive communication, and floating operation.\par
@@ -630,7 +641,7 @@ So with these data, we can calculate $\gamma$ respective to each $P$ following t
 	\frac{T_{becast}}{T_{mult}} = \frac{P(P-1)\cdot 1024^{2} \cdot \hat{t}_{sendrecv}}{(C_{program} \cdot 1024^3 - 1024^2) \cdot \hat{t}_{op} } = \frac{P(P-1)}{C_{program} \cdot 1024 -1} \cdot \gamma
 \end{equation}
 
-Here $C_program$ means the account of floating operations executed per step in a practical program for matrix multiplication. However, in practical cases, it is tough to measure $C_program$ stably and precisely, so compromising to experimental cases, formula (3.21) is modified as the following:
+Here $C_program$ means the account of floating operations executed per step in a practical program for MM. However, in practical cases, it is tough to measure $C_program$ stably and precisely, so compromising to experimental cases, formula (3.21) is modified as the following:
 
 \begin{equation} 
 	%need to fix how to add  mark down note
@@ -641,7 +652,7 @@ Here $C_program$ means the account of floating operations executed per step in a
 	\end{array}
 \end{equation}
 
-Here $T_{mult \_ per \_ step}$ is the time cost per step in the loop of a matrix multiplication in programming.
+Here $T_{mult \_ per \_ step}$ is the time cost per step in the loop of a MM in programming.
 		
 		Then comparing to formula (3.22), it is reasonable to obtain the following relationship:
 
@@ -693,11 +704,11 @@ Therefore, finally we can plot the experimental results inside a 3D space togeth
 Comparing to the analytic surfaces, we found that the communication parts of the algorithms are indeed affected by more other elements not discussed in this paper, which to be searched out is part of the future work on BAMMA.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusions and future work}
-	In this paper, we have discussed about the construction of algorithms for parallel matrix multiplication, based on 3D-Hypercube so that with total computational complexity $O(N^3)$. We have observed that the construction of such algorithm is influenced by the number of computational nodes, the dimensions of matrices and the limit of the buffer size. Concluded from both the theoretical analysis and the experiments, it is learnt that often it is better to construct the parallel algorithms considering adaptive to certain cases, described by the three variables mentioned above, rather than primly follow the rules defined by classical methods.
+	In this paper, we have discussed about the construction of algorithms for PMM, based on 3D-Hypercube so that with total computational complexity $O(N^3)$. We have observed that the construction of such algorithm is influenced by the number of computational nodes, the dimensions of matrices and the limit of the buffer size. Concluded from both the theoretical analysis and the experiments, it is learnt that often it is better to construct the parallel algorithms considering adaptive to certain cases, described by the three variables mentioned above, rather than primly follow the rules defined by classical methods.
 	
-	All of the theoretical analysis is based on the assumption that all the cubes and communication trees onside the P nodes are designed similarly. So as another part of our future work on parallel matrix multiplication, we are going to dig out the possibility to design and evaluate the algorithm, with more flexibility on each specific node with specific condition respectively, so that it can adapt to more practical cases with the best performance. As one of the most latest coming work, we are going to optimize the algorithms on clusters with particular or even special topologies, using the ideas raised in this paper.
+	All of the theoretical analysis is based on the assumption that all the cubes and communication trees onside the P nodes are designed similarly. So as another part of our future work on PMM, we are going to dig out the possibility to design and evaluate the algorithm, with more flexibility on each specific node with specific condition respectively, so that it can adapt to more practical cases with the best performance. As one of the most latest coming work, we are going to optimize the algorithms on clusters with particular or even special topologies, using the ideas raised in this paper.
 	
-	And as mentioned in Section 3.2, another one of our research plans in the future is to optimize and finish the program of BAMMA, so that it can satisfy the requirement for parallel universal matrix multiplication adaptive to specific conditions, expected with better performance comparable to the classical method. And referring to a popular branch of algorithms of parallel matrix multiplication, the recursive algorithms, for instance CARMA[4] raised by the team led by James Demmel in 2013, we may need to furtherly research on the influence of sequential recursion, on the performance of a parallel algorithm of parallel matrix multiplication.
+	And as mentioned in Section 3.2, another one of our research plans in the future is to optimize and finish the program of BAMMA, so that it can satisfy the requirement for parallel universal MM adaptive to specific conditions, expected with better performance comparable to the classical method. And referring to a popular branch of algorithms of PMM, the recursive algorithms, for instance CARMA[4] raised by the team led by James Demmel in 2013, we may need to furtherly research on the influence of sequential recursion, on the performance of a parallel algorithm of PMM.
 
 	Furtherly expanding the algorithm into higher dimensions, series of productions, and special matrices, is also worthwhile. Obtaining a reliable method of parallel matrix multiplication may provide a way to predict and promote the speedup and efficiency of tensor production [7]. And to follow current great researches on sparse tensor space[8], 3D-hypercube algorithm may be helpful with assiting constructing a denser space for faster computitation, with avoiding the uncessary and redundant calculations.  
 	
