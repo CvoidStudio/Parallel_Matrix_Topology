@@ -1,0 +1,30 @@
+#comm login_master(ar)
+ssh ar@192.168.1.249
+123456
+#end
+
+#comm exit current node
+exit
+#end
+
+#comm login_master(root)
+ssh root@192.168.1.249
+123456
+#end
+
+#comm ping-to-all
+@CN start -V
+@CN hide
+for ((i = 1; i <= 32; i++)); do printf node$i": "; ping -c 1 node$i > /dev/null;echo $?; done;
+@CN trans -all +1
+@CN draw -C -M
+@CN reset
+#end
+
+#comm ssh-respond-all
+for ((i = 1; i <= 32; i++)); do printf node$i": "; ssh ar@node$i hostname; done;
+#end
+
+#comm Config-Route
+ls
+#end

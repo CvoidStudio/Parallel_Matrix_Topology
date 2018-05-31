@@ -1,0 +1,22 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+    <file>Res/Button1.png</file>
+	<file>Res/logo2.png</file>
+	<file>Res/Clear.png</file>
+	<file>Res/Stop.png</file>
+	<file>Res/Add.png</file>
+	<file>Res/Login_Btn.png</file>
+	<file>Res/C_Btn_C.png</file>
+	<file>Res/C_Btn_M.png</file>
+	<file>Res/C_Btn_R.png</file>
+	<file>Res/Menu_Btn_T.png</file>
+	<file>Res/DB_save.png</file>
+	<file>Res/DB_load.png</file>
+	<file>Res/DB_paint.png</file>
+	<file>Res/CMD2DB_OK.png</file>
+	<file>Res/CMD2DB_NO.png</file>
+	<file>Res/CMD2DB_VIEW.png</file>
+	<file>Res/CMD2DB_DRAG.png</file>
+</qresource>
+</RCC>

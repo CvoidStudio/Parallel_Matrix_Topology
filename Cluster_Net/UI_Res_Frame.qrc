@@ -1,0 +1,17 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+    <file>Res/Bottom_Frame.jpg</file>
+	<file>Res/Login_back.jpg</file>
+	<file>Res/Login.png</file>
+	<file>Res/Canvas_ToolL.jpg</file>
+	<file>Res/Canvas_ToolU.jpg</file>
+	<file>Res/ListIP.png</file>
+	<file>Res/Menu_B.png</file>
+	<file>Res/Terminal_B.jpg</file>
+	<file>Res/Status.jpg</file>
+	<file>Res/QCommT.jpg</file>
+	<file>Res/Cluster_L.jpg</file>
+	<file>Res/CMD2Data_B.png</file>
+</qresource>
+</RCC>
